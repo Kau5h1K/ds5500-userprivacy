@@ -4,6 +4,7 @@ import pandas as pd
 from pandas import DataFrame
 from scipy import stats
 from sklearn.model_selection import train_test_split
+from src.utils import preprocess
 
 seed = 2021
 np.random.seed(seed)
@@ -12,19 +13,13 @@ random.seed(seed)
 
 class PrivacyPolicyDataset:
 
-    def __init__(self, cfg, dataset_type):
+    def __init__(self, cfg):
 
         self._cfg = cfg
         self.label = cfg.DATA.LABEL
-
-        self.readFiles()
-        self.df = self.df_main.copy()
-
-    def readFiles(self):
-        """
-        load dataset from csv file to dataframe
-        """
-        self.df_main = self.__create_csv_dataframe()
+        prep_obj = preprocess.PreprocessPrivacyPolicyDataset(cfg)
+        self.dataset = prep_obj.processAnnotations()
+        self.metadata = prep_obj.preprocessSiteMetadata()
 
 
     def splitData(self, test_size=0.10, dev_size=0.10, has_dev=False, rand_state = seed):
@@ -59,12 +54,5 @@ class PrivacyPolicyDataset:
         _y = self.df[self.label].copy()
 
         return _X, _y
-
-    def __create_csv_dataframe(self):
-        """
-        read data from csv file
-        :return: pandas dataframe
-        """
-        return pd.read_csv(self.dataset_address, delimiter=';')
 
 
