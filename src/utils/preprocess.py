@@ -19,6 +19,12 @@ class PreprocessPrivacyPolicyDataset:
         self._cfg = cfg
 
     def decorate(func):
+        """
+        Function to decorate the output
+
+        :param func: the function to wrap the output of
+        :return: nested func
+        """
         def inner(self, *args, **kwargs):
             print("-" * 60)
             func(self, *args, **kwargs)
@@ -28,6 +34,12 @@ class PreprocessPrivacyPolicyDataset:
 
     @decorate
     def processAnnotations(self):
+        """
+        Function to process the annotations
+
+        :param self: the current instance of the class
+        :return: master dataset for category model
+        """
         print("Processing Annotations...")
         df_list = []
 
@@ -89,6 +101,12 @@ class PreprocessPrivacyPolicyDataset:
         return cat_model_dataset
 
     def splitCategories(self, annotation_df):
+        """
+        Function to split the dataset by categories
+
+        :param self: the current instance of the class
+        :param annotation_df: merged annotation file of all policies
+        """
         print("Splitting annotations by categories ...")
         cat_dfs_list = [df for _, df in annotation_df.groupby('category')]
 
@@ -106,6 +124,12 @@ class PreprocessPrivacyPolicyDataset:
         self.parseAttr(cat_dfs_list)
 
     def parseAttr(self, cat_dfs_list):
+        """
+        Function to parse the attr key value pairs (JSON)
+
+        :param self: the current instance of the class
+        :param cat_dfs_list: list of dataframes wrt to each category (len of 10)
+        """
         print("Parsing attribute key-value pairs (JSON)...")
         for policy_df in cat_dfs_list:
             policy_df.reset_index(inplace=True, drop=True)
@@ -126,6 +150,12 @@ class PreprocessPrivacyPolicyDataset:
 
     @decorate
     def preprocessSiteMetadata(self):
+        """
+        Function to process the site metadata
+
+        :param self: the current instance of the class
+        :return: site metadata file
+        """
         print("Processing site metadata...!")
         site_metadata_df = pd.read_csv(self._cfg.DATA.INPUT.SITE_METADATA_FPATH)
         # manually added a us rank of 0 to a missing value for policy UID 745
