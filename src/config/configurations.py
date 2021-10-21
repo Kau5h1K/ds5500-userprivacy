@@ -33,8 +33,10 @@ _C.DATA.OUTPUT.ANNOT_DPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH , "processed
 _C.DATA.OUTPUT.SEGMENTS_DPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "processed_segments")
 # master annotations file
 _C.DATA.OUTPUT.ANNOT_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "master_annotations_115.csv")
-# master data for categorical models
-_C.DATA.OUTPUT.CATMODEL_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "master_catmodel_dataset.csv")
+# master data for categorical models (union)
+_C.DATA.OUTPUT.CATMODEL_UNION_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "master_catmodel_dataset_union.csv")
+# master data for categorical models (majority vote)
+_C.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "master_catmodel_dataset_majority.csv")
 # categy-wise split annotations folder (w/o parsed JSON attr)
 _C.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH  = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "catsplit_annotations_115_unparsed")
 # categy-wise split annotations folder (w/ parsed JSON attr)

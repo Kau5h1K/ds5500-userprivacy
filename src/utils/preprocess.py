@@ -18,21 +18,6 @@ class PreprocessPrivacyPolicyDataset:
 
         self._cfg = cfg
 
-    def decorate(func):
-        """
-        Function to decorate the output
-
-        :param func: the function to wrap the output of
-        :return: nested func
-        """
-        def inner(self, *args, **kwargs):
-            print("-" * 60)
-            func(self, *args, **kwargs)
-            print("-" * 60)
-        return inner
-
-
-    @decorate
     def processAnnotations(self):
         """
         Function to process the annotations
@@ -54,7 +39,7 @@ class PreprocessPrivacyPolicyDataset:
 
             #Extract policyID from basename
             policy_id = basename.split('_')[0]
-            policy_df = pd.read_csv(fname, header=None, usecols=[0, 4, 5, 6], names=['annotation_ID', 'segment_ID', 'category', 'attr_val'])
+            policy_df = pd.read_csv(fname, header=None, usecols=[0, 2, 4, 5, 6], names=['annotation_ID','annotator_ID', 'segment_ID', 'category', 'attr_val'])
 
             #Set policyID in each table
             policy_df.loc[:,"policy_ID"] = policy_id
@@ -84,21 +69,26 @@ class PreprocessPrivacyPolicyDataset:
             df_list.append(policy_df_merged)
 
         master_annotations_df = pd.concat(df_list, axis=0, ignore_index=True)
-        master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
-        cat_model_dataset = master_annotations_df[["policy_ID", "segment_ID", "segment_text", "category"]]
-        cat_model_dataset.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_FPATH, index = False)
         assert(master_annotations_df.isnull().any(axis=1).any() == False)
+        master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
+
+        cat_model_dataset_union = master_annotations_df[["segment_text", "category"]].drop_duplicates()
+        cat_model_dataset_majority = self.createMajorityDataset(master_annotations_df[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates())
+
+        cat_model_dataset_majority.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH, index = False)
+        cat_model_dataset_union.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH, index = False)
 
         print("Processing annotations complete!")
         print("Saved Processed segments to directory {}".format(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH))
         print("Saved Processed annotations to directory {}".format(self._cfg.DATA.OUTPUT.ANNOT_DPATH))
         print("Saved master annotation to file {}".format(self._cfg.DATA.OUTPUT.ANNOT_FPATH))
-        print("Saved master dataset for category model to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_FPATH))
+        print("Saved master dataset for category model (majority) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH))
+        print("Saved master dataset for category model (union) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH))
         print("-"*60)
 
         self.splitCategories(master_annotations_df)
 
-        return cat_model_dataset
+        return cat_model_dataset_majority, cat_model_dataset_union
 
     def splitCategories(self, annotation_df):
         """
@@ -148,7 +138,6 @@ class PreprocessPrivacyPolicyDataset:
         print("Parsing complete!")
         print("Saved parsed category-wise split annotations to directory {}".format(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH))
 
-    @decorate
     def preprocessSiteMetadata(self):
         """
         Function to process the site metadata
@@ -183,3 +172,12 @@ class PreprocessPrivacyPolicyDataset:
         print("Saved site metadata to file {}".format(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH))
         return metadata_df
 
+
+    def createMajorityDataset(self, dataset):
+        dataset.segment_ID = dataset.segment_ID.astype('str')
+        dataset.policy_ID = dataset.policy_ID.astype('str')
+        dataset['polID_segID_cat'] = dataset[['policy_ID','segment_ID', 'category']].agg('-'.join, axis=1)
+        dataset_counts = dataset.groupby('polID_segID_cat').nunique()['annotator_ID']
+        selected_rows = dataset_counts[dataset_counts >= 2].index
+        majority_data = dataset[dataset.polID_segID_cat.isin(selected_rows)][["segment_text", "category"]].drop_duplicates().reset_index(drop=True)
+        return majority_data
