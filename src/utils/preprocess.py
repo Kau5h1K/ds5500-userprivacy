@@ -3,9 +3,6 @@ import numpy as np
 import glob
 import warnings
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
-import matplotlib.pyplot as plt
-import seaborn as sns
 warnings.filterwarnings('ignore')
 import os
 import json
@@ -70,10 +67,15 @@ class PreprocessPrivacyPolicyDataset:
 
         master_annotations_df = pd.concat(df_list, axis=0, ignore_index=True)
         assert(master_annotations_df.isnull().any(axis=1).any() == False)
+
+        if self._cfg.DATA.ELEVATE_OTHER_ATTR:
+            master_annotations_df = self.elevateOtherCategoryAttr(master_annotations_df)
+
         master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
 
         cat_model_dataset_union = master_annotations_df[["segment_text", "category"]].drop_duplicates()
         cat_model_dataset_majority = self.createMajorityDataset(master_annotations_df[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates())
+
 
         cat_model_dataset_majority.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH, index = False)
         cat_model_dataset_union.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH, index = False)
@@ -181,3 +183,12 @@ class PreprocessPrivacyPolicyDataset:
         selected_rows = dataset_counts[dataset_counts >= 2].index
         majority_data = dataset[dataset.polID_segID_cat.isin(selected_rows)][["segment_text", "category"]].drop_duplicates().reset_index(drop=True)
         return majority_data
+
+    def elevateOtherCategoryAttr(self, df):
+
+        for i,r in df.iterrows():
+            if r['category'] == "Other":
+                attr_dict = json.loads(r["attr_val"])
+                df.iloc[i, 3] = attr_dict["Other Type"]["value"]
+        df = df[df.category != "Other"]
+        return df

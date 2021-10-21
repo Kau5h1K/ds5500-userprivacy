@@ -46,5 +46,6 @@ _C.DATA.OUTPUT.SITE_METADATA_FPATH  = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "s
 
 # LABEL
 _C.DATA.LABEL = "category"
+_C.DATA.ELEVATE_OTHER_ATTR = True
 
 ########################################################################################################################
