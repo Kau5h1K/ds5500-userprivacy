@@ -32,7 +32,7 @@ class PrivacyPolicyDataset:
         :param rand_state:
         :return: X_train, X_test, y_train, y_test or X_train, X_dev, X_test, y_train, y_dev, y_test
         """
-        print("\nSplitting the dataset...")
+        print("\nSplitting the {} dataset...".format("majority" if is_majority else "union" ))
         _X, _y = self.__X_and_y(is_majority)
 
         _X_train, _X_test, _y_train, _y_test = train_test_split(_X, _y, test_size=test_size, random_state=rand_state, stratify=_y)
@@ -40,14 +40,14 @@ class PrivacyPolicyDataset:
             _X_train, _X_dev, _y_train, _y_dev = train_test_split(_X_train, _y_train, test_size=dev_size,
                                                                  random_state=rand_state, stratify=_y_train)
             print("-" * 60)
-            print("Successfully split the dataset into {:g}% train, {:g}% dev and {:g}% test!".format((1-dev_size-test_size)*100, dev_size*100, test_size*100))
+            print("Successfully split the {} dataset into {:g}% train, {:g}% dev and {:g}% test!".format("majority" if is_majority else "union" ,(1-dev_size-test_size)*100, dev_size*100, test_size*100))
             print("Number of unique segments in total: {}".format(_X.drop_duplicates().shape[0]))
             print("Number of rows in total: {}".format(len(_y)))
             self.splitStatistics(splitlist = [_X_train, _X_dev, _X_test, _y_train, _y_dev, _y_test], has_dev = True)
             return _X_train, _X_dev, _X_test, _y_train, _y_dev, _y_test
         else:
             print("-" * 60)
-            print("Successfully split the dataset into {:g}% train and {:g}% test".format((1-test_size)*100, test_size*100))
+            print("Successfully split the {} dataset into {:g}% train and {:g}% test".format("majority" if is_majority else "union" , (1-test_size)*100, test_size*100))
             print("Number of unique segments in total: {}".format(_X.drop_duplicates().shape[0]))
             print("Number of rows in total: {}".format(len(_y)))
             self.splitStatistics(splitlist = [_X_train, _X_test, _y_train, _y_test], has_dev = False)
