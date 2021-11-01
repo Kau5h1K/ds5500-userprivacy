@@ -5,6 +5,7 @@ from pandas import DataFrame
 from scipy import stats
 from sklearn.model_selection import train_test_split
 from src.utils import preprocess
+from collections import OrderedDict
 
 seed = 2021
 np.random.seed(seed)
@@ -17,9 +18,6 @@ class PrivacyPolicyDataset:
 
         self._cfg = cfg
         self.label = cfg.DATA.LABEL
-        prep_obj = preprocess.PreprocessPrivacyPolicyDataset(cfg)
-        self.dataset_majority, self.dataset_union = prep_obj.processAnnotations()
-        self.metadata = prep_obj.preprocessSiteMetadata()
 
 
     def splitData(self, test_size=0.10, dev_size=0.10, has_dev=True, rand_state = seed, is_majority = True):

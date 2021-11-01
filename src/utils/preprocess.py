@@ -7,7 +7,7 @@ warnings.filterwarnings('ignore')
 import os
 import json
 import re
-
+from collections import OrderedDict
 
 
 class PreprocessPrivacyPolicyDataset:
@@ -15,11 +15,12 @@ class PreprocessPrivacyPolicyDataset:
 
         self._cfg = cfg
 
-    def processAnnotations(self):
+    def processAnnotations(self, splitcat = False):
         """
         Function to process the annotations
 
         :param self: the current instance of the class
+        :param splitcat: Process datasaet for visualization (split the dataset wrt categories
         :return: master dataset for category model
         """
         print("Processing Annotations...")
@@ -31,8 +32,9 @@ class PreprocessPrivacyPolicyDataset:
             basename = os.path.basename(fname)
 
             #Create directories if they don't exist
-            os.makedirs(self._cfg.DATA.OUTPUT.ANNOT_DPATH, exist_ok = True)
-            os.makedirs(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH, exist_ok = True)
+            if self._cfg.DATA.OUTPUT.SAVEFILE:
+                os.makedirs(self._cfg.DATA.OUTPUT.ANNOT_DPATH, exist_ok = True)
+                os.makedirs(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH, exist_ok = True)
 
             #Extract policyID from basename
             policy_id = basename.split('_')[0]
@@ -56,12 +58,14 @@ class PreprocessPrivacyPolicyDataset:
             segments_df.reset_index(inplace = True)
 
             #Save processed segments
-            segments_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH, basename), index = False)
+            if self._cfg.DATA.OUTPUT.SAVEFILE:
+                segments_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH, basename), index = False)
 
             policy_df_merged = policy_df.merge(segments_df, on='segment_ID', how = "inner")
 
             #Save processed policies
-            policy_df_merged.to_csv(os.path.join(self._cfg.DATA.OUTPUT.ANNOT_DPATH, basename), index = False)
+            if self._cfg.DATA.OUTPUT.SAVEFILE:
+                policy_df_merged.to_csv(os.path.join(self._cfg.DATA.OUTPUT.ANNOT_DPATH, basename), index = False)
 
             df_list.append(policy_df_merged)
 
@@ -71,26 +75,28 @@ class PreprocessPrivacyPolicyDataset:
         if self._cfg.DATA.ELEVATE_OTHER_ATTR:
             master_annotations_df = self.elevateOtherCategoryAttr(master_annotations_df)
 
-        master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
 
-        cat_model_dataset_union = master_annotations_df[["segment_text", "category"]].drop_duplicates()
-        cat_model_dataset_majority = self.createMajorityDataset(master_annotations_df[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates())
+        cat_model_dataset_union = self.createUnionDataset(master_annotations_df)
+        cat_model_dataset_majority = self.createMajorityDataset(master_annotations_df)
 
-
-        cat_model_dataset_majority.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH, index = False)
-        cat_model_dataset_union.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH, index = False)
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            cat_model_dataset_majority.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH, index = False)
+            cat_model_dataset_union.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH, index = False)
 
         print("Processing annotations complete!")
-        print("Saved Processed segments to directory {}".format(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH))
-        print("Saved Processed annotations to directory {}".format(self._cfg.DATA.OUTPUT.ANNOT_DPATH))
-        print("Saved master annotation to file {}".format(self._cfg.DATA.OUTPUT.ANNOT_FPATH))
-        print("Saved master dataset for category model (majority) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH))
-        print("Saved master dataset for category model (union) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH))
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            print("Saved Processed segments to directory {}".format(self._cfg.DATA.OUTPUT.SEGMENTS_DPATH))
+            print("Saved Processed annotations to directory {}".format(self._cfg.DATA.OUTPUT.ANNOT_DPATH))
+            print("Saved master annotation to file {}".format(self._cfg.DATA.OUTPUT.ANNOT_FPATH))
+            print("Saved master dataset for category model (majority) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH))
+            print("Saved master dataset for category model (union) to file {}".format(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH))
         print("-"*60)
 
-        self.splitCategories(master_annotations_df)
+        if splitcat:
+            self.splitCategories(master_annotations_df)
 
-        return cat_model_dataset_majority, cat_model_dataset_union
 
     def splitCategories(self, annotation_df):
         """
@@ -103,15 +109,18 @@ class PreprocessPrivacyPolicyDataset:
         cat_dfs_list = [df for _, df in annotation_df.groupby('category')]
 
         #Directory exist check
-        os.makedirs(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH, exist_ok = True)
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            os.makedirs(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH, exist_ok = True)
 
         #Save them into corresponding .CSV files
-        for df in cat_dfs_list:
-            assert(len(set(df.category)) == 1)
-            category = '_'.join(next(iter(set(df.category))).replace("/", "-").split(" "))
-            df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH, "{}.csv".format(category)), index = False)
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            for df in cat_dfs_list:
+                assert(len(set(df.category)) == 1)
+                category = '_'.join(next(iter(set(df.category))).replace("/", "-").split(" "))
+                df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH, "{}.csv".format(category)), index = False)
         print("Splitting annotations complete!")
-        print("Saved unparsed category-wise split annotations to directory {}".format(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH))
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            print("Saved unparsed category-wise split annotations to directory {}".format(self._cfg.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH))
         print("-"*60)
         self.parseAttr(cat_dfs_list)
 
@@ -127,7 +136,8 @@ class PreprocessPrivacyPolicyDataset:
             policy_df.reset_index(inplace=True, drop=True)
             assert(len(set(policy_df.category)) == 1)
             category = '_'.join(next(iter(set(policy_df.category))).replace("/", "-").split(" "))
-            os.makedirs(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH, exist_ok = True)
+            if self._cfg.DATA.OUTPUT.SAVEFILE:
+                os.makedirs(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH, exist_ok = True)
 
             cat_list_of_dict = []
             for index, row in policy_df.iterrows():
@@ -136,9 +146,12 @@ class PreprocessPrivacyPolicyDataset:
             cat_df = pd.DataFrame(cat_list_of_dict)
             policy_df.drop(["attr_val"], axis = 1, inplace = True)
             assert(cat_df.isnull().any(axis=1).any() == False)
-            pd.concat((policy_df, cat_df), axis = 1).to_csv(os.path.join(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH, "{}.csv".format(category)), index = False)
+            final_df = pd.concat((policy_df, cat_df), axis = 1)
+            if self._cfg.DATA.OUTPUT.SAVEFILE:
+                final_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH, "{}.csv".format(category)), index = False)
         print("Parsing complete!")
-        print("Saved parsed category-wise split annotations to directory {}".format(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH))
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            print("Saved parsed category-wise split annotations to directory {}".format(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH))
 
     def preprocessSiteMetadata(self):
         """
@@ -169,19 +182,73 @@ class PreprocessPrivacyPolicyDataset:
                        'alexa_rank_us': alexa_rank_us,
                        'sectors': sectors
                        })
-        metadata_df.to_csv(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH, index = False)
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            metadata_df.to_csv(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH, index = False)
         print("Processing metadata complete!")
-        print("Saved site metadata to file {}".format(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH))
-        return metadata_df
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            print("Saved site metadata to file {}".format(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH))
 
+    def encodeCategories(self, category, catIndex):
+        cat_encoded = np.zeros((len(catIndex)))
+        cat_encoded[catIndex[category]] = 1
+        return cat_encoded
 
-    def createMajorityDataset(self, dataset):
+    def createUnionDataset(self, data):
+        dataset = data[["policy_ID", "segment_ID", "segment_text", "category"]].drop_duplicates().reset_index(drop=True)
+        union_data = pd.DataFrame({'segment_text': [], 'category': []})
+        g = dataset.groupby(["policy_ID"])
+        for _, df in g:
+            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, OrderedDict([('First Party Collection/Use', 0),
+                                                                                                     ('Third Party Sharing/Collection', 1),
+                                                                                                     ('User Access, Edit and Deletion', 2),
+                                                                                                     ('Data Retention', 3),
+                                                                                                     ('Data Security', 4),
+                                                                                                     ('International and Specific Audiences', 5),
+                                                                                                     ('Do Not Track', 6),
+                                                                                                     ('Policy Change', 7),
+                                                                                                     ('User Choice/Control', 8),
+                                                                                                     ('Introductory/Generic', 9),
+                                                                                                     ('Practice not covered', 10),
+                                                                                                     ('Privacy contact information', 11)])))
+            encoded_cats = df[['segment_ID', 'category']].groupby("segment_ID").sum()
+            uniq_segments = df[['segment_ID', 'segment_text']].set_index('segment_ID').drop_duplicates()
+            encoded_df = pd.merge(uniq_segments, encoded_cats, left_index=True, right_index=True)
+            union_data = pd.concat([union_data, encoded_df])
+
+        union_data.reset_index(drop=True, inplace=True)
+        return union_data
+
+    def createMajorityDataset(self, data):
+        dataset = data[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates()
         dataset.segment_ID = dataset.segment_ID.astype('str')
         dataset.policy_ID = dataset.policy_ID.astype('str')
         dataset['polID_segID_cat'] = dataset[['policy_ID','segment_ID', 'category']].agg('-'.join, axis=1)
         dataset_counts = dataset.groupby('polID_segID_cat').nunique()['annotator_ID']
         selected_rows = dataset_counts[dataset_counts >= 2].index
-        majority_data = dataset[dataset.polID_segID_cat.isin(selected_rows)][["segment_text", "category"]].drop_duplicates().reset_index(drop=True)
+        dataset = dataset[dataset.polID_segID_cat.isin(selected_rows)][["policy_ID", "segment_ID", "segment_text", "category"]].drop_duplicates().reset_index(drop=True)
+
+        majority_data = pd.DataFrame({'segment_text': [], 'category': []})
+        g = dataset.groupby(["policy_ID"])
+        for _, df in g:
+            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, OrderedDict([('First Party Collection/Use', 0),
+                                                                                                  ('Third Party Sharing/Collection', 1),
+                                                                                                  ('User Access, Edit and Deletion', 2),
+                                                                                                  ('Data Retention', 3),
+                                                                                                  ('Data Security', 4),
+                                                                                                  ('International and Specific Audiences', 5),
+                                                                                                  ('Do Not Track', 6),
+                                                                                                  ('Policy Change', 7),
+                                                                                                  ('User Choice/Control', 8),
+                                                                                                  ('Introductory/Generic', 9),
+                                                                                                  ('Practice not covered', 10),
+                                                                                                  ('Privacy contact information', 11)])))
+            encoded_cats = df[['segment_ID', 'category']].groupby("segment_ID").sum()
+            uniq_segments = df[['segment_ID', 'segment_text']].set_index('segment_ID').drop_duplicates()
+            encoded_df = pd.merge(uniq_segments, encoded_cats, left_index=True, right_index=True)
+            majority_data = pd.concat([majority_data, encoded_df])
+
+        majority_data.reset_index(drop=True, inplace=True)
+
         return majority_data
 
     def elevateOtherCategoryAttr(self, df):
@@ -192,3 +259,90 @@ class PreprocessPrivacyPolicyDataset:
                 df.iloc[i, 3] = attr_dict["Other Type"]["value"]
         df = df[df.category != "Other"]
         return df
+
+    def genIDs(self, num):
+        id_lst = []
+        for i in range(num):
+            id_lst.append(i)
+        return id_lst
+
+    def createRelationalData(self):
+        site_metadata_df = pd.read_csv(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH)
+        lst = []
+        for i,r in site_metadata_df.iterrows():
+            for j in eval(r['sectors']):
+                lst.append(j)
+        unique_sec = list(set(lst))
+        site_metadata_df_orig = site_metadata_df.copy()
+        for sec in unique_sec:
+            site_metadata_df[sec] = 0
+        for i,r in site_metadata_df.iterrows():
+            for sec in eval(r['sectors']):
+                site_metadata_df.loc[i, sec] = 1
+        site_metadata_df.drop(['sectors'], axis = 1, inplace = True)
+        site_sector_map_df = pd.melt(site_metadata_df, id_vars=['policy_ID'], value_vars= site_metadata_df.columns[4:],
+                                     var_name='sector', value_name='sector_val')
+        site_sector_map_df = site_sector_map_df[site_sector_map_df.sector_val == 1]
+        site_sector_map_df = site_sector_map_df.drop(["sector_val"], axis = 1).reset_index(drop = True)
+        ids = self.genIDs(site_sector_map_df.shape[0])
+        site_sector_map_df['site_sector_map_ID'] = ids
+        site_sector_map_df = site_sector_map_df[["site_sector_map_ID", "policy_ID", "sector"]]
+        site_metadata_df_orig.drop(["sectors"], inplace = True, axis = 1)
+
+
+        master_df = pd.read_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH)
+        lst_cat = list(set(master_df.category))
+        ids = self.genIDs(len(lst_cat))
+        cat_metadata_df = pd.DataFrame(list(zip(ids, lst_cat)), columns = ["category_ID", "category"])
+
+
+        master_df = pd.read_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH)
+        master_df = master_df.merge(cat_metadata_df, how = "inner", on = "category")
+        master_df.drop(["category", "attr_val"], axis = 1, inplace = True)
+
+
+        cat_attr_lst = []
+        for fname in glob.glob(r"{}/*.csv".format(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH)):
+            if not (os.path.basename(fname) in ["Introductory-Generic.csv", "Practice_not_covered.csv", "Privacy_contact_information.csv"]):
+                df = pd.read_csv(fname)
+                cat_attr_lst.append({col:next(iter(set(df.category))) for col in list(df.columns[6:])})
+
+
+        attr_cat_map_df = pd.DataFrame(
+            [{"attr": key, "category": value} for d in cat_attr_lst for key, value in d.items() ])
+        ids = self.genIDs(attr_cat_map_df.shape[0])
+        attr_cat_map_df['attr_cat_map_ID'] = ids
+        attr_cat_map_df = attr_cat_map_df[["attr_cat_map_ID", "category", "attr"]]
+
+        attr_table_df = attr_cat_map_df[["attr"]].drop_duplicates(ignore_index=True)
+        ids = self.genIDs(attr_table_df.shape[0])
+        attr_table_df['attr_ID'] = ids
+        attr_table_df = attr_table_df[["attr_ID", "attr"]]
+
+        attr_cat_map_df = attr_cat_map_df.merge(attr_table_df, how = "inner", on = "attr").merge(cat_metadata_df, how = "inner", on = "category")
+        attr_cat_map_df = attr_cat_map_df[["attr_cat_map_ID", "category_ID", "attr_ID"]]
+
+
+        attr_data_df = pd.DataFrame()
+        for fname in glob.glob(r"{}/*.csv".format(self._cfg.DATA.OUTPUT.CATSPLIT_PARSED_DPATH)):
+            df = pd.read_csv(fname)
+            attr_data_df = pd.concat([attr_data_df, pd.melt(df, id_vars=['annotation_ID'], value_vars= df.columns[6:],
+                                                            var_name='attr', value_name='attr_val')], axis =0, ignore_index = True)
+
+        attr_data_df = attr_data_df.merge(attr_table_df, how = "inner", on = "attr")
+        ids = self.genIDs(attr_data_df.shape[0])
+        attr_data_df['attr_data_ID'] = ids
+        attr_data_df = attr_data_df[["attr_data_ID", "annotation_ID", "attr_ID", "attr_val"]]
+        attr_data_df[["attr_ID", "attr_val"]].drop_duplicates(ignore_index = True).to_csv("test.csv", index = False)
+
+        if self._cfg.DATA.OUTPUT.SAVEFILE:
+            os.makedirs(self._cfg.DATA.OUTPUT.RDB_DPATH, exist_ok = True)
+            site_metadata_df_orig.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "site_metadata.csv"), index = False)
+            site_sector_map_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "site_sector_map.csv"), index = False)
+            cat_metadata_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "category_metadata.csv"), index = False)
+            master_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "annotation_data.csv"), index = False)
+            attr_table_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "attr_metadata.csv"), index = False)
+            attr_cat_map_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "attr_category_map.csv"), index = False)
+            attr_data_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "attr_values_map.csv"), index = False)
+
+

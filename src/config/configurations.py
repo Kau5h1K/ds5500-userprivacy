@@ -43,9 +43,23 @@ _C.DATA.OUTPUT.CATSPLIT_UNPARSED_DPATH  = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH
 _C.DATA.OUTPUT.CATSPLIT_PARSED_DPATH  = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "catsplit_annotations_115_parsed")
 # processed site metadata
 _C.DATA.OUTPUT.SITE_METADATA_FPATH  = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "site_metadata_115.csv")
-
+# relational data for visualization
+_C.DATA.OUTPUT.RDB_DPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "csv_relational_data")
+# save files for visualization
+_C.DATA.OUTPUT.SAVEFILE = False
 # LABEL
 _C.DATA.LABEL = "category"
+# True for Union_dataset else Majority_dataset
+_C.DATA.IS_UNION = True
+# convert other category into its attributes
 _C.DATA.ELEVATE_OTHER_ATTR = True
 
 ########################################################################################################################
+# DEFINE EMBEDDING PARAMS
+_C.EMBED = CN()
+# embeddings dir
+_C.EMBED.OUTPUT_DPATH = os.path.join(_C.DATA.INPUT.ROOT_DPATH, "embeddings")
+# corpus tokens and indices dictionary path
+_C.EMBED.CORPUS_TOKEN_IDX_FPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "corpus_tokens_idx.pkl")
+
+
