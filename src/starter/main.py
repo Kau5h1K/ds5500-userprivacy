@@ -14,7 +14,7 @@ sys.path.insert(0, ROOT_DIR)
 
 from src.config import cfg
 from src.data.PrivacyPolicyDataset import PrivacyPolicyDataset
-from src.data.preprocess import PreprocessPrivacyPolicyDataset
+from src.data.prepOPPCorpus import prepOPPCorpus
 from src.utils import embeddings
 
 def set_seeds(seed=2021):
@@ -37,7 +37,7 @@ else:
 
 def main():
      set_seeds()
-     prep_obj = PreprocessPrivacyPolicyDataset(cfg)
+     prep_obj = prepOPPCorpus(cfg)
      prep_obj.processAnnotations(splitcat=True)
      prep_obj.preprocessSiteMetadata()
      prep_obj.createRelationalData()

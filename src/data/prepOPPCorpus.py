@@ -10,7 +10,7 @@ import re
 from collections import OrderedDict
 
 
-class PreprocessPrivacyPolicyDataset:
+class prepOPPCorpus:
     def __init__(self, cfg):
 
         self._cfg = cfg
