@@ -14,6 +14,30 @@ class PreprocessPrivacyPolicyDataset:
     def __init__(self, cfg):
 
         self._cfg = cfg
+        self.cat2idx = OrderedDict([('First Party Collection/Use', 0),
+                                   ('Third Party Sharing/Collection', 1),
+                                   ('User Access, Edit and Deletion', 2),
+                                   ('Data Retention', 3),
+                                   ('Data Security', 4),
+                                   ('International and Specific Audiences', 5),
+                                   ('Do Not Track', 6),
+                                   ('Policy Change', 7),
+                                   ('User Choice/Control', 8),
+                                   ('Introductory/Generic', 9),
+                                   ('Practice not covered', 10),
+                                   ('Privacy contact information', 11)])
+        self.idx2cat = OrderedDict([(0, 'First Party Collection/Use'),
+                                    (1, 'Third Party Sharing/Collection'),
+                                    (2, 'User Access, Edit and Deletion'),
+                                    (3, 'Data Retention'),
+                                    (4, 'Data Security'),
+                                    (5, 'International and Specific Audiences'),
+                                    (6, 'Do Not Track'),
+                                    (7, 'Policy Change'),
+                                    (8, 'User Choice/Control'),
+                                    (9, 'Introductory/Generic'),
+                                    (10, 'Practice not covered'),
+                                    (11, 'Privacy contact information')])
 
     def processAnnotations(self, splitcat = False):
         """
@@ -78,12 +102,14 @@ class PreprocessPrivacyPolicyDataset:
         if self._cfg.DATA.OUTPUT.SAVEFILE:
             master_annotations_df.to_csv(self._cfg.DATA.OUTPUT.ANNOT_FPATH, index = False)
 
-        cat_model_dataset_union = self.createUnionDataset(master_annotations_df)
-        cat_model_dataset_majority = self.createMajorityDataset(master_annotations_df)
+        cat_model_dataset_union, cat_model_dataset_union_decoded = self.createUnionDataset(master_annotations_df)
+        cat_model_dataset_majority, cat_model_dataset_majority_decoded = self.createMajorityDataset(master_annotations_df)
 
         if self._cfg.DATA.OUTPUT.SAVEFILE:
             cat_model_dataset_majority.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH, index = False)
+            cat_model_dataset_majority_decoded.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_MAJORITY_DECODED_FPATH, index = False)
             cat_model_dataset_union.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH, index = False)
+            cat_model_dataset_union_decoded.to_csv(self._cfg.DATA.OUTPUT.CATMODEL_UNION_DECODED_FPATH, index = False)
 
         print("Processing annotations complete!")
         if self._cfg.DATA.OUTPUT.SAVEFILE:
@@ -193,30 +219,29 @@ class PreprocessPrivacyPolicyDataset:
         cat_encoded[catIndex[category]] = 1
         return cat_encoded
 
+    def decode_labels(self, x, labels_map):
+        lst = []
+        for i, lab in enumerate(x):
+            if lab == 1:
+                lst.append(labels_map[i])
+        return lst
+
     def createUnionDataset(self, data):
         dataset = data[["policy_ID", "segment_ID", "segment_text", "category"]].drop_duplicates().reset_index(drop=True)
         union_data = pd.DataFrame({'segment_text': [], 'category': []})
         g = dataset.groupby(["policy_ID"])
         for _, df in g:
-            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, OrderedDict([('First Party Collection/Use', 0),
-                                                                                                     ('Third Party Sharing/Collection', 1),
-                                                                                                     ('User Access, Edit and Deletion', 2),
-                                                                                                     ('Data Retention', 3),
-                                                                                                     ('Data Security', 4),
-                                                                                                     ('International and Specific Audiences', 5),
-                                                                                                     ('Do Not Track', 6),
-                                                                                                     ('Policy Change', 7),
-                                                                                                     ('User Choice/Control', 8),
-                                                                                                     ('Introductory/Generic', 9),
-                                                                                                     ('Practice not covered', 10),
-                                                                                                     ('Privacy contact information', 11)])))
+            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, self.cat2idx))
             encoded_cats = df[['segment_ID', 'category']].groupby("segment_ID").sum()
             uniq_segments = df[['segment_ID', 'segment_text']].set_index('segment_ID').drop_duplicates()
             encoded_df = pd.merge(uniq_segments, encoded_cats, left_index=True, right_index=True)
             union_data = pd.concat([union_data, encoded_df])
 
+        union_data["category"] = union_data["category"].apply(lambda x: list(x))
         union_data.reset_index(drop=True, inplace=True)
-        return union_data
+        union_data_decoded = union_data.copy()
+        union_data_decoded["category"] = union_data_decoded["category"].apply(lambda x: self.decode_labels(x, self.idx2cat))
+        return union_data, union_data_decoded
 
     def createMajorityDataset(self, data):
         dataset = data[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates()
@@ -230,26 +255,18 @@ class PreprocessPrivacyPolicyDataset:
         majority_data = pd.DataFrame({'segment_text': [], 'category': []})
         g = dataset.groupby(["policy_ID"])
         for _, df in g:
-            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, OrderedDict([('First Party Collection/Use', 0),
-                                                                                                  ('Third Party Sharing/Collection', 1),
-                                                                                                  ('User Access, Edit and Deletion', 2),
-                                                                                                  ('Data Retention', 3),
-                                                                                                  ('Data Security', 4),
-                                                                                                  ('International and Specific Audiences', 5),
-                                                                                                  ('Do Not Track', 6),
-                                                                                                  ('Policy Change', 7),
-                                                                                                  ('User Choice/Control', 8),
-                                                                                                  ('Introductory/Generic', 9),
-                                                                                                  ('Practice not covered', 10),
-                                                                                                  ('Privacy contact information', 11)])))
+            df['category'] = df['category'].apply(lambda x: self.encodeCategories(x, self.cat2idx))
             encoded_cats = df[['segment_ID', 'category']].groupby("segment_ID").sum()
             uniq_segments = df[['segment_ID', 'segment_text']].set_index('segment_ID').drop_duplicates()
             encoded_df = pd.merge(uniq_segments, encoded_cats, left_index=True, right_index=True)
             majority_data = pd.concat([majority_data, encoded_df])
 
+        majority_data["category"] = majority_data["category"].apply(lambda x: list(x))
         majority_data.reset_index(drop=True, inplace=True)
+        majority_data_decoded = majority_data.copy()
+        majority_data_decoded["category"] = majority_data_decoded["category"].apply(lambda x: self.decode_labels(x, self.idx2cat))
 
-        return majority_data
+        return majority_data, majority_data_decoded
 
     def elevateOtherCategoryAttr(self, df):
 
