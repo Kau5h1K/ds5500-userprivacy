@@ -350,7 +350,6 @@ class PreprocessPrivacyPolicyDataset:
         ids = self.genIDs(attr_data_df.shape[0])
         attr_data_df['attr_data_ID'] = ids
         attr_data_df = attr_data_df[["attr_data_ID", "annotation_ID", "attr_ID", "attr_val"]]
-        attr_data_df[["attr_ID", "attr_val"]].drop_duplicates(ignore_index = True).to_csv("test.csv", index = False)
 
         if self._cfg.DATA.OUTPUT.SAVEFILE:
             os.makedirs(self._cfg.DATA.OUTPUT.RDB_DPATH, exist_ok = True)
