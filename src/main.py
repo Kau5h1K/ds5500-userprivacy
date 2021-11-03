@@ -7,7 +7,7 @@ warnings.filterwarnings('ignore')
 
 from pathlib import Path
 import sys
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent.as_posix() # add project root path for jupyter/CLI
+ROOT_DIR = Path(__file__).resolve().parent.parent.as_posix() # add project root path for jupyter/CLI
 sys.path.insert(0, ROOT_DIR)
 #sys.path.insert(0, "/Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject") # add project path for jupyter/CLI local
 #sys.path.insert(0, "/home/kaushik/DS5500") # add project path for jupyter/CLI remote
