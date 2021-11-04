@@ -1,6 +1,7 @@
 from yacs.config import CfgNode as CN
 import os
 from pathlib import Path
+import mlflow
 
 ########################################################################################################################
 ########################################################################################################################
@@ -63,8 +64,6 @@ _C.DATA.OUTPUT.RDB_DPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "csv_relation
 _C.DATA.OUTPUT.SAVEFILE = True
 # LABEL
 _C.DATA.LABEL = "category"
-# True for Union_dataset else Majority_dataset
-_C.DATA.IS_UNION = True
 # convert other category into its attributes
 _C.DATA.ELEVATE_OTHER_ATTR = True
 
@@ -78,6 +77,39 @@ _C.EMBED.OUTPUT_DPATH = os.path.join(_C.DATA.INPUT.ROOT_DPATH, "embeddings")
 # corpus tokens and indices dictionary path
 _C.EMBED.CORPUS_TOKEN_IDX_FPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "corpus_tokens_idx.pkl")
 
+
+########################################################################################################################
+########################################################################################################################
+
+# DEFINE GLOBAL, MODEL, and MISC PARAMS
+
+_C.PARAM = CN()
+_C.PARAM.DF_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "dataset.pkl")
+
+_C.PARAM.SEED = 2021
+_C.PARAM.DATASET = "union"
+_C.PARAM.CUDA = True
+_C.PARAM.LOWER = True
+_C.PARAM.STEM = False
+_C.PARAM.TRAIN_SIZE = 0.7
+_C.PARAM.CHAR_LEVEL = True
+_C.PARAM.MAX_FILTER_SIZE = 1
+_C.PARAM.BATCH_SIZE = 128
+_C.PARAM.NUM_EPOCHS = 1
+_C.PARAM.PATIENCE = 10
+_C.PARAM.BEST_PARAM_DPATH = (Path(__file__).resolve().parent / "best_params").as_posix()
+os.makedirs(_C.PARAM.BEST_PARAM_DPATH, exist_ok = True)
+
+_C.PARAM.BEST_PARAM_FPATH = (Path(__file__).resolve().parent / "best_params").as_posix()
+########################################################################################################################
+########################################################################################################################
+
+# MLFLOW PARAMS
+
+_C.MLFLOW = CN()
+_C.MLFLOW.MODEL_REGISTRY = (Path(__file__).resolve().parent.parent.parent / "mlflow_registry").as_posix()
+os.makedirs(_C.MLFLOW.MODEL_REGISTRY, exist_ok = True)
+mlflow.set_tracking_uri("file://" + _C.MLFLOW.MODEL_REGISTRY)
 
 ########################################################################################################################
 ########################################################################################################################

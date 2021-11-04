@@ -1,0 +1,103 @@
+{
+  "overall": {
+    "precision": 0.1788728440530835,
+    "recall": 0.541795665634675,
+    "f1": 0.26638869654769454,
+    "num_samples": 568.0
+  },
+  "class": {
+    "Data Retention": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 23.0
+    },
+    "Data Security": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 57.0
+    },
+    "Do Not Track": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 5.0
+    },
+    "First Party Collection/Use": {
+      "precision": 0.400352733686067,
+      "recall": 0.9956140350877193,
+      "f1": 0.5710691823899371,
+      "num_samples": 228.0
+    },
+    "International and Specific Audiences": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 53.0
+    },
+    "Introductory/Generic": {
+      "precision": 0.2147887323943662,
+      "recall": 1.0,
+      "f1": 0.3536231884057971,
+      "num_samples": 122.0
+    },
+    "Policy Change": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 29.0
+    },
+    "Practice not covered": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 97.0
+    },
+    "Privacy contact information": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 48.0
+    },
+    "Third Party Sharing/Collection": {
+      "precision": 0.3137254901960784,
+      "recall": 0.9887640449438202,
+      "f1": 0.476319350473613,
+      "num_samples": 178.0
+    },
+    "User Access, Edit and Deletion": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 34.0
+    },
+    "User Choice/Control": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "num_samples": 95.0
+    }
+  },
+  "slices": {
+    "class": {
+      "cv_transformers": {
+        "precision": 0.4666666666666667,
+        "recall": 0.4666666666666667,
+        "f1": 0.4666666666666667,
+        "num_samples": 5
+      },
+      "short_text": {
+        "precision": 0.3148148148148148,
+        "recall": 0.7083333333333334,
+        "f1": 0.43589743589743596,
+        "num_samples": 18
+      }
+    },
+    "overall": {
+      "precision": 0.34782608695652173,
+      "recall": 0.6557971014492755,
+      "f1": 0.44258639910813835
+    }
+  }
+}

@@ -138,3 +138,6 @@ OPP-115/*
 */.ipynb_checkpoints/*
 
 .idea/*
+
+#MLFLOW registry
+mlflow_registry/*
