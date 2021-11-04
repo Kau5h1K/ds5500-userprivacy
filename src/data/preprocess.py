@@ -5,42 +5,54 @@ import torch
 import itertools
 import json
 import re
-from argparse import Namespace
 from collections import Counter
-from pathlib import Path
 from nltk.corpus import stopwords
 
 
 from nltk.stem import PorterStemmer
 from skmultilearn.model_selection import IterativeStratification
 
-from src.config import configurations
-from src.utils import general
 
 
 
-def preprocess(text, lower=True, stem=False, stopwords=stopwords.words('english')):
-    # Lower
+def cleanText(text, lower=True, stem=False, remove_stopwords=False, isolate_sym = True, remove_alphanum = True):
+    """
+    Function to clean the segment text
+    :param text: text to process
+    :param lower: lower the text
+    :param stem: Perform stemming
+    :param remove_stopwords: Remove stopwords
+    :param isolate_sym: Isolate symbols
+    :param remove_alphanum: Remove non-alphanumeric
+    :return: cleaned segments text
+
+    """
+
+    # Lower text
     if lower:
         text = text.lower()
 
     # Remove stopwords
-    if len(stopwords):
-        pattern = re.compile(r"\b(" + r"|".join(stopwords) + r")\b\s*")
+    if remove_stopwords:
+        pattern = re.compile(r"\b(" + r"|".join(stopwords.words('english')) + r")\b\s*")
         text = pattern.sub("", text)
 
-    # Spacing and filters
-    text = re.sub(
-        r"([!\"'#$%&()*\+,-./:;<=>?@\\\[\]^_`{|}~])", r" \1 ", text
-    )  # add spacing between objects to be filtered
-    text = re.sub("[^A-Za-z0-9]+", " ", text)  # remove non alphanumeric chars
-    text = re.sub(" +", " ", text)  # remove multiple spaces
+    # Isolate symbols
+    if isolate_sym:
+        text = re.sub(r"([!\"'#$%&()*\+,-./:;<=>?@\\\[\]^_`{|}~])", r" \1 ", text)
+
+    # Remove non-alphanumeric
+    if remove_alphanum:
+        text = re.sub("[^A-Za-z0-9]+", " ", text)
+
+    # Remove Extra padding
+    text = re.sub(" +", " ", text)
     text = text.strip()
 
-    # Remove links
+    # Remove hyperlinks
     text = re.sub(r"http\S+", "", text)
 
-    # Stemming
+    # Perform stemming
     if stem:
         stemmer = PorterStemmer()
         text = " ".join([stemmer.stem(word) for word in text.split(" ")])
@@ -50,6 +62,16 @@ def preprocess(text, lower=True, stem=False, stopwords=stopwords.words('english'
 
 
 class LabelEncoder:
+    """
+    Class to encode/decode categories to one-hot encoding and viceversa
+    Attribution: Code adapted from
+        @article{madewithml,
+        author       = {Goku Mohandas},
+        title        = { Packaging - Made With ML },
+        howpublished = {\url{https://madewithml.com/}},
+        year         = {2021}
+        }
+    """
     def __init__(self, class_to_index={}):
         self.class_to_index = class_to_index or {}  # mutable defaults ;)
         self.index_to_class = {v: k for k, v in self.class_to_index.items()}
@@ -95,22 +117,33 @@ class LabelEncoder:
         return classes
 
 
-def iterative_train_test_split(X, y, train_size=0.7):
-    stratifier = IterativeStratification(
-        n_splits=2,
-        order=1,
-        sample_distribution_per_fold=[
-            1.0 - train_size,
-            train_size,
-            ],
-    )
-    train_indices, test_indices = next(stratifier.split(X, y))
-    X_train, y_train = X[train_indices], y[train_indices]
-    X_test, y_test = X[test_indices], y[test_indices]
+def train_test_split_multilabel(X, y, train_size=0.7, order = 1):
+    """
+    Train test split function for multi-label data
+    :param X: X split
+    :param y: y split
+    :param train_size: size of train
+    :param order: order of label combinations
+    :return X_train, X_test, y_train, y_test
+    """
+    stratifier = IterativeStratification(n_splits=2, order=order, sample_distribution_per_fold=[1.0 - train_size, train_size])
+    train_idx, test_idx = next(stratifier.split(X, y))
+    X_train, y_train = X[train_idx], y[train_idx]
+    X_test, y_test = X[test_idx], y[test_idx]
     return X_train, X_test, y_train, y_test
 
 
 class Tokenizer:
+    """
+    Class to tokenize the text on char/word level and obtain encoded sequences of text
+    Attribution: Code adapted from
+                @article{madewithml,
+                author       = {Goku Mohandas},
+                title        = { Packaging - Made With ML },
+                howpublished = {\url{https://madewithml.com/}},
+                year         = {2021}
+                }
+    """
     def __init__(self, char_level, num_tokens=None, pad_token="<PAD>", oov_token="<UNK>", token_to_index=None):
         self.char_level = char_level
         self.separator = "" if self.char_level else " "
@@ -177,12 +210,14 @@ class Tokenizer:
             kwargs = json.load(fp=fp)
         return cls(**kwargs)
 
-def pad_sequences(sequences, max_seq_len=0):
-    # Get max sequence length
-    max_seq_len = max(max_seq_len, max(len(sequence) for sequence in sequences))
+def Addpadding(lists, max_list_len = 0):
 
-    # Pad
-    padded_sequences = np.zeros((len(sequences), max_seq_len))
-    for i, sequence in enumerate(sequences):
-        padded_sequences[i][: len(sequence)] = sequence
-    return padded_sequences
+    """
+    :param lists: input list of lists
+    :param max_list_len: align all lists to this length with zeros
+    """
+    max_list_len = max(max_list_len, max(len(lst) for lst in lists))
+    padded_lists = np.zeros((len(lists), max_list_len))
+    for i, lst in enumerate(lists):
+        padded_lists[i][:len(lst)] = lst
+    return padded_lists
