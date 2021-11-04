@@ -48,7 +48,7 @@ def Corpus2Tokens(cfg, read_pickle = True, clean = False):
     except:
         print("Creating the token index dictionary with filename, {}".format(cfg.EMBED.CORPUS_TOKEN_IDX_FPATH))
         os.makedirs(cfg.EMBED.OUTPUT_DPATH, exist_ok = True)
-        if cfg.DATA.IS_UNION:
+        if cfg.PARAM.DATASET == "union":
             corpus_path = cfg.DATA.OUTPUT.CATMODEL_UNION_FPATH
         else:
             corpus_path = cfg.DATA.OUTPUT.CATMODEL_MAJORITY_FPATH
