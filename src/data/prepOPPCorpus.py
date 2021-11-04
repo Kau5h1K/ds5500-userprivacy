@@ -8,9 +8,12 @@ import os
 import json
 import re
 from collections import OrderedDict
+from src.utils import gen
 
 
 class prepOPPCorpus:
+    """ Prepares dataset for VIZ and ML from raw OPP-115 corpus
+    """
     def __init__(self, cfg):
 
         self._cfg = cfg
@@ -215,11 +218,25 @@ class prepOPPCorpus:
             print("Saved site metadata to file {}".format(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH))
 
     def encodeCategories(self, category, catIndex):
+        """
+        Function to encode categories to binary
+
+        :param category: current category
+        :param catIndex: an OrderedDict to choose the encoding map from
+        :return: encoded list
+        """
         cat_encoded = np.zeros((len(catIndex)))
         cat_encoded[catIndex[category]] = 1
         return cat_encoded
 
     def decode_labels(self, x, labels_map):
+        """
+        Function to decode binary categories to original text
+
+        :param x: current category
+        :param labels_map: an OrderedDict to choose the decoding map from
+        :return: decoded list
+        """
         lst = []
         for i, lab in enumerate(x):
             if lab == 1:
@@ -227,6 +244,12 @@ class prepOPPCorpus:
         return lst
 
     def createUnionDataset(self, data):
+        """
+        Function to create union gold standard dataset
+
+        :param data: dataset with all annotations
+        :return: union dataset
+        """
         dataset = data[["policy_ID", "segment_ID", "segment_text", "category"]].drop_duplicates().reset_index(drop=True)
         union_data = pd.DataFrame({'segment_text': [], 'category': []})
         g = dataset.groupby(["policy_ID"])
@@ -244,6 +267,12 @@ class prepOPPCorpus:
         return union_data, union_data_decoded
 
     def createMajorityDataset(self, data):
+        """
+        Function to create majority gold standard dataset
+
+        :param data: dataset with all annotations
+        :return: majority dataset
+        """
         dataset = data[["policy_ID", "segment_ID", "annotator_ID", "segment_text", "category"]].drop_duplicates()
         dataset.segment_ID = dataset.segment_ID.astype('str')
         dataset.policy_ID = dataset.policy_ID.astype('str')
@@ -269,6 +298,12 @@ class prepOPPCorpus:
         return majority_data, majority_data_decoded
 
     def elevateOtherCategoryAttr(self, df):
+        """
+        Function to elevate Other category attributes to category level
+
+        :param df: dataset with all annotations
+        :return modified df
+        """
 
         for i,r in df.iterrows():
             if r['category'] == "Other":
@@ -278,12 +313,23 @@ class prepOPPCorpus:
         return df
 
     def genIDs(self, num):
+        """
+        Function to generate primary key IDs for new tables
+
+        :param num: number of IDs required
+        :return: list of IDS
+        """
         id_lst = []
         for i in range(num):
             id_lst.append(i)
         return id_lst
 
     def createRelationalData(self):
+        """
+        Function to create Relational data files for VIZ
+
+        :return: list of .CSV files saved to file system
+        """
         site_metadata_df = pd.read_csv(self._cfg.DATA.OUTPUT.SITE_METADATA_FPATH)
         lst = []
         for i,r in site_metadata_df.iterrows():
@@ -362,3 +408,21 @@ class prepOPPCorpus:
             attr_data_df.to_csv(os.path.join(self._cfg.DATA.OUTPUT.RDB_DPATH, "attr_values_map.csv"), index = False)
 
 
+
+
+def createDataset(cfg, splitcat = False, metadata = False, relational_data = False):
+    """
+    Top-level Function to create Datasets for ML and VIZ
+
+    :param cfg: config
+    :param splitcat: Split the categories (calls splitCategories func)
+    :param metadata: Create metadata file (calls preprocessSiteMetadata func)
+    :param relational_data: creates relational data (calls createRelationalData func)
+    """
+    gen.setSeeds(cfg.PARAM.SEED)
+    prep_obj = prepOPPCorpus(cfg)
+    prep_obj.processAnnotations(splitcat)
+    if metadata:
+        prep_obj.preprocessSiteMetadata()
+    if relational_data:
+        prep_obj.createRelationalData()
