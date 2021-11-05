@@ -88,7 +88,7 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
         mlflow.set_tags(tags)
 
         # Log performance evaluation metrics from run
-        performance = artifacts["performance"]
+        performance = artifacts["metrics"]
         print(json.dumps(performance["overall"], indent=2))
         metrics = {"precision": performance["overall"]["precision"],
                    "recall": performance["overall"]["recall"],
