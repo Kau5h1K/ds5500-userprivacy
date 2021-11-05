@@ -8,13 +8,7 @@ import optuna
 class Trainer:
     """
     Boilerplate class to perform training, eval and predict on pytorch NN models
-    Attribution: code adapted from
-                @article{madewithml,
-                author       = {Goku Mohandas},
-                title        = { Packaging - Made With ML },
-                howpublished = {\url{https://madewithml.com/}},
-                year         = {2021}
-                }
+    Attribution: code adapted from https://madewithml.com/
     """
     def __init__(self, model, device=torch.device("cpu"), loss_fn=None, optimizer=None, scheduler=None, trial=None):
 
@@ -28,7 +22,7 @@ class Trainer:
 
     def train_step(self, dataloader):
         # Set model to train mode
-        self.model.performRunCNN()
+        self.model.train()
         loss = 0.0
 
         # Iterate over train batches

@@ -141,3 +141,6 @@ OPP-115/*
 
 #MLFLOW registry
 mlflow_registry/*
+
+# Best params
+src/config/best_params/*

@@ -99,7 +99,7 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
         # Log run artifacts to MLFlow registry
         with tempfile.TemporaryDirectory() as dp:
             gen.saveParams(vars(artifacts["params"]), Path(dp, "params.json"), cls=NumpyEncoder)
-            gen.saveParams(performance, Path(dp, "performance.json"))
+            gen.saveParams(performance, Path(dp, "metrics.json"))
             artifacts["label_encoder"].save(Path(dp, "label_encoder.json"))
             artifacts["tokenizer"].save(Path(dp, "tokenizer.json"))
             torch.save(artifacts["model"].state_dict(), Path(dp, "model.pt"))
@@ -107,7 +107,7 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
         mlflow.log_params(vars(artifacts["params"]))
 
     # Save performance metrics and run ID to local system
-    if not save:
+    if save:
         open(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"), "w").write(run_id)
         gen.saveParams(performance, os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "metrics.json"))
 
@@ -134,7 +134,7 @@ def getRunParams(run_id):
     :return params
     """
     artifact_uri = mlflow.get_run(run_id=run_id).info.artifact_uri.split("file://")[-1]
-    params = gen.loadParams(filepath=Path(artifact_uri, "params.json"))
+    params = gen.loadParams(fpath=Path(artifact_uri, "params.json"))
     print(json.dumps(params, indent=2))
     return params
 
@@ -146,7 +146,7 @@ def getRunMetrics(run_id):
     :return metrics
     """
     artifact_uri = mlflow.get_run(run_id=run_id).info.artifact_uri.split("file://")[-1]
-    metrics = gen.loadParams(filepath=Path(artifact_uri, "metrics.json"))
+    metrics = gen.loadParams(fpath=Path(artifact_uri, "metrics.json"))
     print(json.dumps(metrics, indent=2))
     return metrics
 
@@ -164,11 +164,11 @@ def loadRunArtifacts(run_id, device=torch.device("cpu")):
     # Load artifacts from MLFLow registry
     experiment_id = mlflow.get_run(run_id=run_id).info.experiment_id
     artifacts_dir = os.path.join(cfg.MLFLOW.MODEL_REGISTRY, experiment_id, run_id, "artifacts")
-    params = Namespace(**gen.loadParams(filepath=os.path.join(artifacts_dir, "params.json")))
+    params = Namespace(**gen.loadParams(fpath=os.path.join(artifacts_dir, "params.json")))
     label_encoder = preprocess.LabelEncoder.load(fp=Path(artifacts_dir, "label_encoder.json"))
     tokenizer = preprocess.Tokenizer.load(fp=Path(artifacts_dir, "tokenizer.json"))
     model_state = torch.load(Path(artifacts_dir, "model.pt"), map_location=device)
-    performance = gen.loadParams(filepath=Path(artifacts_dir, "performance.json"))
+    performance = gen.loadParams(fpath=Path(artifacts_dir, "metrics.json"))
 
     # Load model state
     model = CNN.buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder))

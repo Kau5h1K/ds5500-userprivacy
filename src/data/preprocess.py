@@ -64,13 +64,7 @@ def cleanText(text, lower=True, stem=False, remove_stopwords=False, isolate_sym 
 class LabelEncoder:
     """
     Class to encode/decode categories to one-hot encoding and viceversa
-    Attribution: Code adapted from
-        @article{madewithml,
-        author       = {Goku Mohandas},
-        title        = { Packaging - Made With ML },
-        howpublished = {\url{https://madewithml.com/}},
-        year         = {2021}
-        }
+    Attribution: Code adapted from https://madewithml.com/
     """
     def __init__(self, class_to_index={}):
         self.class_to_index = class_to_index or {}  # mutable defaults ;)
@@ -136,13 +130,7 @@ def train_test_split_multilabel(X, y, train_size=0.7, order = 1):
 class Tokenizer:
     """
     Class to tokenize the text on char/word level and obtain encoded sequences of text
-    Attribution: Code adapted from
-                @article{madewithml,
-                author       = {Goku Mohandas},
-                title        = { Packaging - Made With ML },
-                howpublished = {\url{https://madewithml.com/}},
-                year         = {2021}
-                }
+    Attribution: Code adapted from https://madewithml.com
     """
     def __init__(self, char_level, num_tokens=None, pad_token="<PAD>", oov_token="<UNK>", token_to_index=None):
         self.char_level = char_level

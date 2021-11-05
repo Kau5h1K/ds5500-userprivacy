@@ -21,7 +21,7 @@ def decorate(func):
         print("~" * 60)
     return inner
 
-@decorate
+
 def splitStatistics(splitlist):
     """
     Function to print split statistics
@@ -29,13 +29,13 @@ def splitStatistics(splitlist):
     :param splitlist: _X_train, _X_dev, _X_test, _y_train, _y_dev, _y_test
     :return: print split stats
     """
+    cat_list = ['Data Retention', 'Data Security', 'Do Not Track', 'First Party Collection/Use', 'International and Specific Audiences', 'Introductory/Generic', 'Policy Change', 'Practice not covered', 'Privacy contact information', 'Third Party Sharing/Collection', 'User Access, Edit and Deletion', 'User Choice/Control']
     _X_train, _X_val, _X_test, _y_train, _y_val, _y_test = splitlist
-    for label, (X, y) in {"TRAIN SET":[_X_train, _y_train], "DEV SET":[_X_val, _y_val], "TEST SET":[_X_test, _y_test]}.items():
+    for label, (_X, _y) in {"TRAIN SET":[_X_train, _y_train], "DEV SET":[_X_val, _y_val], "TEST SET":[_X_test, _y_test]}.items():
         print(label)
-        print("Number of unique segments: {}".format(X.drop_duplicates().shape[0]))
-        print("Number of rows: {}".format(len(y)))
+        print("Number of unique segments: {}".format(_X.shape[0]))
         print("Percentage of segments containing each of the following categories:")
-        df = y.value_counts()
+        df = pd.Series(np.sum(_y, axis = 0), index= cat_list)
         print(pd.DataFrame({
             "Counts": df,
             "Percentage": (round(df/sum(df)*100, 2)).astype('str') + "%"}))
@@ -76,13 +76,7 @@ def get_metrics(y_true, y_pred, classes, df=None):
     :param classes: categories
     :param df: dataset
     :return return metrics dict (overall and per-class)
-    Attribution: Code adapted from
-        @article{madewithml,
-        author       = {Goku Mohandas},
-        title        = { Packaging - Made With ML },
-        howpublished = {\url{https://madewithml.com/}},
-        year         = {2021}
-        }
+    Attribution: Code adapted from https://madewithml.com/
     """
     # Performance
     metrics = {"overall": {}, "class": {}}

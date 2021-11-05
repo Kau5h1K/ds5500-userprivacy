@@ -3,6 +3,7 @@ warnings.filterwarnings('ignore')
 
 from pathlib import Path
 import sys
+import os
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent.as_posix() # add project root path for jupyter/CLI
 sys.path.insert(0, ROOT_DIR)
 #sys.path.insert(0, "/Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject") # add project path for jupyter/CLI local
@@ -30,25 +31,25 @@ def main():
     params = gen.createParamDict(cfg)
 
     # Perform hyper-param tuning
-    driver.performTuning(params, study_name="optimization", num_trials=5)
+    driver.performTuning(params, study_name="optimization", n_trials=5)
 
     # Train model with custom (best) params
-    params_fp = gen.loadParams(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"))
-    driver.trainwithBP(params_fp, experiment_name="test", run_name="run1", test_run=False)
+    params = gen.loadParams(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"))
+    driver.trainwithBP(params, experiment_name="test", run_name="run1", save=True)
 
     # Predict segment with custom run_id
-    run_id = "89dc0a7cb3224ac48d72e0a942d52786"
+    run_id = "87d0855983d248d0a91d801ff9773ba8"
     text = "When You access the Service by or through a mobile device, We may collect certain information automatically, " \
            "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
            " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
            "and other diagnostic data."
-    print(driver.predictSegment(text, run_id))
+    driver.predictSegment(text, run_id)
 
     # Get params of custom run_id
-    print(driver.getRunParams(run_id))
+    driver.getRunParams(run_id)
 
     # Get performance of custom run_id
-    print(driver.getRunMetrics(run_id))
+    driver.getRunMetrics(run_id)
 
     # Serve MLFlow UI
     # mlflow ui --backend-store-uri file:///Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject/mlflow_registry
@@ -57,7 +58,7 @@ def main():
     #kill -9 $(lsof -i:5000 -t) 2> /dev/null
 
     # Delete test experiment
-    driver.deleteMLFlowExperiment(experiment_name="test")
+    #driver.deleteMLFlowExperiment(experiment_name="test")
 
 
 

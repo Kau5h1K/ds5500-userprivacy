@@ -122,7 +122,7 @@ class CNNDataset(torch.utils.data.Dataset):
         y = np.stack(batch[:, 1], axis=0)
 
         # Pad inputs
-        X = preprocess.Addpadding(sequences=X, max_seq_len=self.max_filter_size)
+        X = preprocess.Addpadding(lists=X, max_list_len=self.max_filter_size)
 
         X = torch.LongTensor(X.astype(np.int32))
         y = torch.FloatTensor(y.astype(np.int32))
@@ -225,7 +225,7 @@ def performRunCNN(params, trial = None):
     artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": best_model, "loss": best_val_loss}
     device = torch.device("cpu")
     y_true, y_pred, performance = evaluateCNN(df=test_df, artifacts=artifacts)
-    artifacts["performance"] = performance
+    artifacts["metrics"] = performance
 
     # Return run artifacts
     return artifacts
@@ -249,12 +249,12 @@ def objectiveCNN(params, trial):
 
     # Start trial
     print(f"\nTrial {trial.number}:")
-    print(json.dumps(trial.getRunParams, indent=2))
+    print(json.dumps(trial.params, indent=2))
     artifacts = performRunCNN(params=params, trial=trial)
 
     # Set tags and attributes
     params = artifacts["params"]
-    performance = artifacts["performance"]
+    performance = artifacts["metrics"]
     print(json.dumps(performance["overall"], indent=2))
     trial.set_user_attr("threshold", params.threshold)
     trial.set_user_attr("precision", performance["overall"]["precision"])
