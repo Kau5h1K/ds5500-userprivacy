@@ -107,6 +107,16 @@ def loadDataset(cfg):
     return dataset
 
 
+def loadID(fpath):
+    """
+    Load the text file for run ID
+    :param fpath: file path for text file
+    :return loaded run ID
+    """
+    with open(fpath) as f:
+        run_ID = f.read().strip()
+    return run_ID
+
 
 def loadParams(fpath):
     """

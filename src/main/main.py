@@ -25,25 +25,25 @@ def main():
     """
 
     # Create dataset for modeling and VIZ
-    prepOPPCorpus.createDataset(cfg, splitcat = False, metadata = False, relational_data = False)
+    #prepOPPCorpus.createDataset(cfg, splitcat = False, metadata = False, relational_data = False)
 
     # Create global param dict for modeling
-    params = gen.createParamDict(cfg)
+    #params = gen.createParamDict(cfg)
 
     # Perform hyper-param tuning
-    driver.performTuning(params, study_name="optimization", n_trials=5)
+    #driver.performTuning(params, study_name="optimization", n_trials=5)
 
     # Train model with custom (best) params
-    #params = gen.loadParams(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"))
-    #driver.trainwithBP(params, experiment_name="test", run_name="run1", save=True)
+    params = gen.loadParams(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"))
+    driver.trainwithBP(params, experiment_name="test", run_name="run1", save=True)
 
     # Predict segment with custom run_id
-    #run_id = "3496df67988c4d1c990ed6f2a43016e8"
+    run_id = gen.loadID(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"))
     text = "When You access the Service by or through a mobile device, We may collect certain information automatically, " \
           "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
            " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
            "and other diagnostic data."
-    #driver.predictSegment(text, run_id)
+    driver.predictSegment(text, run_id)
 
     # Get params of custom run_id
     #driver.getRunParams(run_id)
