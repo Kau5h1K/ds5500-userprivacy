@@ -1,0 +1,20 @@
+{
+  "dataset": "union",
+  "seed": 2021,
+  "cuda": true,
+  "lower": true,
+  "stem": false,
+  "train_size": 0.7,
+  "char_level": true,
+  "max_filter_size": 10,
+  "batch_size": 128,
+  "embedding_dim": 504,
+  "num_filters": 472,
+  "hidden_dim": 387,
+  "dropout_p": 0.6065003167861672,
+  "lr": 0.0002656053142937365,
+  "num_epochs": 200,
+  "patience": 10,
+  "threshold": 0.3524867594242096,
+  "num_samples": 3776
+}
