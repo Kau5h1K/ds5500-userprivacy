@@ -31,19 +31,19 @@ def main():
     #params = gen.createParamDict(cfg)
 
     # Perform hyper-param tuning
-    #driver.performTuning(params, study_name="optimization", n_trials=5)
+    #driver.performTuning(params, study_name="optimization_1", n_trials=5)
 
     # Train model with custom (best) params
     params = gen.loadParams(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"))
-    driver.trainwithBP(params, experiment_name="test", run_name="run1", save=True)
+    driver.trainwithBP(params, experiment_name="test", run_name="run2", save=True)
 
     # Predict segment with custom run_id
-    run_id = gen.loadID(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"))
+    #run_id = gen.loadID(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"))
     text = "When You access the Service by or through a mobile device, We may collect certain information automatically, " \
           "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
            " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
            "and other diagnostic data."
-    driver.predictSegment(text, run_id)
+    #driver.predictSegment(text, run_id)
 
     # Get params of custom run_id
     #driver.getRunParams(run_id)
@@ -58,7 +58,7 @@ def main():
     #kill -9 $(lsof -i:5000 -t) 2> /dev/null
 
     # Delete test experiment
-    #driver.deleteMLFlowExperiment(experiment_name="test")
+    #driver.deleteMLFlowExperiment(experiment_name="optimize")
 
 
 

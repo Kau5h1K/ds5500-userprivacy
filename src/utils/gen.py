@@ -16,10 +16,13 @@ def setDevice(cuda = True):
     torch.set_default_tensor_type("torch.FloatTensor")
     if device.type == "cuda":
         torch.set_default_tensor_type("torch.cuda.FloatTensor")
+    return device
+
+def showDevice(device):
+    if torch.device == "cuda":
         print("🟢 CUDA device is available. Setting default device to CUDA and default tensor type to cuda.FloatTensor")
     else:
         print("🔴 CUDA device is not available. Setting default device to CPU and default tensor type to FloatTensor")
-    return device
 
 
 def setSeeds(seed=2021):

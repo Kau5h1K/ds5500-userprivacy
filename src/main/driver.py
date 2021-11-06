@@ -31,14 +31,16 @@ def performTuning(param_dict, study_name="optimization", n_trials=100):
     """
 
     print("🟠 Performing Hyper-parameter tuning for {} trials...".format(n_trials))
+
     # Convert Dict to ArgeParse namespace
     params = Namespace(**param_dict)
-
+    df = gen.loadDataset(cfg)
+    gen.showDevice(gen.setDevice(cuda=params.cuda))
     # Set up Optuna params with MLFlow callback
     pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=5)
     study = optuna.create_study(study_name=study_name, direction="maximize", pruner=pruner)
     mlflow_callback = MLflowCallback(tracking_uri=mlflow.get_tracking_uri(), metric_name="f1")
-    study.optimize(lambda trial: CNN.objectiveCNN(params, trial), n_trials=n_trials, callbacks=[mlflow_callback])
+    study.optimize(lambda trial: CNN.objectiveCNN(df, params, trial), n_trials=n_trials, callbacks=[mlflow_callback])
 
     print("🟢 Hyper-parameter tuning completed successfully!")
     # Get stats of all trials
@@ -72,8 +74,10 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
                                           https://www.run.ai/guides/machine-learning-operations/mlflow/
     """
     # Convert Dict to ArgeParse namespace
+    print("🟠 Retraining the model with tuned parameters...")
     params = Namespace(**param_dict)
-
+    df = gen.loadDataset(cfg)
+    gen.showDevice(gen.setDevice(cuda=params.cuda))
     # Start experiment
     mlflow.set_experiment(experiment_name=experiment_name)
     # Start run
@@ -81,7 +85,7 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
         run_id = mlflow.active_run().info.run_id
 
         # Perform training for one run
-        artifacts = CNN.performRunCNN(params=params)
+        artifacts = CNN.performRunCNN(dataset=df, params=params)
 
         # Set custom tags
         tags = {}
@@ -95,6 +99,9 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
                    "f1": performance["overall"]["f1"],
                    "best_val_loss": artifacts["loss"]}
         mlflow.log_metrics(metrics)
+
+        for idx in range(len(artifacts["train_losses"])):
+            mlflow.log_metrics({'train_losses': artifacts["train_losses"][idx], 'val_losses': artifacts["val_losses"][idx]}, step=idx + 1)
 
         # Log run artifacts to MLFlow registry
         with tempfile.TemporaryDirectory() as dp:

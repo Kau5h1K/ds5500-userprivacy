@@ -3,7 +3,6 @@ import json
 import numpy as np
 import pandas as pd
 import math
-from distutils.util import strtobool
 
 import torch
 import torch.nn as nn
@@ -134,7 +133,7 @@ class CNNDataset(torch.utils.data.Dataset):
 
 
 
-def performRunCNN(params, trial = None):
+def performRunCNN(dataset, params, trial = None):
     """
     :param params: global param dict
     :param trial: Optune trial indicator
@@ -147,7 +146,7 @@ def performRunCNN(params, trial = None):
     device = gen.setDevice(cuda=params.cuda)
 
     # Load Dataset
-    df = gen.loadDataset(cfg)
+    df = dataset
 
     # Get length of dataset
     params.num_samples = len(df)
@@ -215,14 +214,14 @@ def performRunCNN(params, trial = None):
     trainer = Trainer(model=model, device=device, loss_fn=loss_fn, optimizer=optimizer, scheduler=scheduler, trial=trial)
 
     # Train CNN
-    best_val_loss, best_model = trainer.train(params.num_epochs, params.patience, train_dataloader, val_dataloader)
+    best_val_loss, best_model, train_losses, val_losses = trainer.train(params.num_epochs, params.patience, train_dataloader, val_dataloader)
 
     # Find optimal threshold
     _, y_true, y_prob = trainer.eval_step(dataloader=train_dataloader)
     params.threshold = metrics.getOptimalTreshold(y_true=y_true, y_prob=y_prob)
 
     # Evaluate model
-    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": best_model, "loss": best_val_loss}
+    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": best_model, "loss": best_val_loss, 'train_losses':train_losses, 'val_losses': val_losses}
     device = torch.device("cpu")
     y_true, y_pred, performance = evaluateCNN(df=test_df, artifacts=artifacts)
     artifacts["metrics"] = performance
@@ -231,7 +230,7 @@ def performRunCNN(params, trial = None):
     return artifacts
 
 
-def objectiveCNN(params, trial):
+def objectiveCNN(dataset, params, trial):
     """
     Objective function for Optuna hyperparameter tuning
     :param params: global param dict
@@ -250,7 +249,7 @@ def objectiveCNN(params, trial):
     # Start trial
     print(f"\nTrial {trial.number}:")
     print(json.dumps(trial.params, indent=2))
-    artifacts = performRunCNN(params=params, trial=trial)
+    artifacts = performRunCNN(dataset=dataset, params=params, trial=trial)
 
     # Set tags and attributes
     params = artifacts["params"]

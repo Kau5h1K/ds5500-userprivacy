@@ -2,7 +2,7 @@
 import numpy as np
 import torch
 import optuna
-
+import mlflow
 
 
 class Trainer:
@@ -93,6 +93,8 @@ class Trainer:
         best_val_loss = np.inf
         best_model = None
         _patience = patience
+        train_losses = []
+        val_losses = []
         for epoch in range(num_epochs):
             # Steps
             train_loss = self.train_step(dataloader=train_dataloader)
@@ -102,7 +104,7 @@ class Trainer:
             # Pruning based on the intermediate value
             if self.trial:
                 self.trial.report(val_loss, epoch)
-                if self.trial.should_prune():  # pragma: no cover, optuna pruning
+                if self.trial.should_prune():
                     print("Unpromising trial pruned!")
                     raise optuna.TrialPruned()
 
@@ -111,11 +113,16 @@ class Trainer:
                 best_val_loss = val_loss
                 best_model = self.model
                 _patience = patience  # reset _patience
-            else:  # pragma: no cover, simple subtraction
+            else:
                 _patience -= 1
-            if not _patience:  # pragma: no cover, simple break
+            if not _patience:
                 print("Stopping early!")
                 break
+
+            # Tracking
+            train_losses.append(train_loss)
+            val_losses.append(val_loss)
+            #mlflow.log_metrics({"train_loss": train_loss, "val_loss": val_loss}, step=epoch)
 
             # Logging
             print(
@@ -125,4 +132,4 @@ class Trainer:
                 f"lr: {self.optimizer.param_groups[0]['lr']:.2E}, "
                 f"_patience: {_patience}"
             )
-        return best_val_loss, best_model
+        return best_val_loss, best_model, train_losses, val_losses
