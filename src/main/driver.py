@@ -3,6 +3,7 @@ import tempfile
 import warnings
 from argparse import Namespace
 from pathlib import Path
+import pandas as pd
 
 import mlflow
 import optuna
@@ -55,14 +56,15 @@ def performTuning(param_dict, study_name="optimization", n_trials=100):
     params["threshold"] = study.best_trial.user_attrs["threshold"]
 
     # Save params of best trial to local system
-    os.makedirs(cfg.PARAM.BEST_PARAM_DPATH, exist_ok = True)
-    gen.saveParams(params, os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_param_dict.json"), cls=NumpyEncoder)
+    experiment_dpath = os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_params_" + study_name)
+    os.makedirs(experiment_dpath, exist_ok = True)
+    gen.saveParams(params, os.path.join(experiment_dpath, "best_param_dict.json"), cls=NumpyEncoder)
     print("Parameters of best trial")
     print(json.dumps(params, indent=2, cls=NumpyEncoder))
 
 
 
-def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False):
+def trainwithBP(param_dict, experiment_name="EXP_TEST", run_name="RUN_TEST", save=False):
     """
     Train/Retrain the model with Custom/best params obtained from tuning
     :param param_dict: global param dict
@@ -74,8 +76,27 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
                                           https://www.run.ai/guides/machine-learning-operations/mlflow/
     """
     # Convert Dict to ArgeParse namespace
-    print("🟠 Retraining the model with tuned parameters...")
-    params = Namespace(**param_dict)
+    if param_dict:
+        print("Using custom parameters passed to the function...")
+        params = Namespace(**param_dict)
+    else:
+        try:
+            print("🔴 No parameters explicitly passed to the function!")
+            print("🟠 Retrieving best parameters for the experiment {}...".format(experiment_name))
+            experiment_dpath = os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_params_" + experiment_name)
+            print(experiment_dpath)
+            param_dict = gen.loadParams(os.path.join(experiment_dpath, "best_param_dict.json"))
+            params = Namespace(**param_dict)
+
+        except:
+
+            print("🔴 Invalid directory! Failed to retrieve the best parameters for experiment {}".format(experiment_name))
+            return
+
+    print("🟢 Best parameters successfully loaded!")
+    print("\n🟠 Retraining the model with tuned parameters...")
+    print("Run name: {}".format(run_name))
+
     df = gen.loadDataset(cfg)
     gen.showDevice(gen.setDevice(cuda=params.cuda))
     # Start experiment
@@ -93,7 +114,7 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
 
         # Log performance evaluation metrics from run
         performance = artifacts["metrics"]
-        print(json.dumps(performance["overall"], indent=2))
+        print(pd.DataFrame(performance["report"]).T)
         metrics = {"precision": performance["overall"]["precision"],
                    "recall": performance["overall"]["recall"],
                    "f1": performance["overall"]["f1"],
@@ -115,8 +136,9 @@ def trainwithBP(param_dict, experiment_name="best", run_name="model", save=False
 
     # Save performance metrics and run ID to local system
     if save:
-        open(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"), "w").write(run_id)
-        gen.saveParams(performance, os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "metrics.json"))
+        experiment_dpath = os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_params_" + experiment_name)
+        open(os.path.join(experiment_dpath, "run_ID.txt"), "w").write(run_id)
+        gen.saveParams(performance, os.path.join(experiment_dpath, "metrics.json"))
 
 
 def predictSegment(segment, run_id):

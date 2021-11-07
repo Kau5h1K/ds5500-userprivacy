@@ -254,7 +254,8 @@ def objectiveCNN(dataset, params, trial):
     # Set tags and attributes
     params = artifacts["params"]
     performance = artifacts["metrics"]
-    print(json.dumps(performance["overall"], indent=2))
+    print(pd.DataFrame(performance["report"]).T)
+    #print(json.dumps(performance["overall"], indent=2))
     trial.set_user_attr("threshold", params.threshold)
     trial.set_user_attr("precision", performance["overall"]["precision"])
     trial.set_user_attr("recall", performance["overall"]["recall"])

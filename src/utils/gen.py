@@ -19,7 +19,7 @@ def setDevice(cuda = True):
     return device
 
 def showDevice(device):
-    if torch.device == "cuda":
+    if device.type == "cuda":
         print("🟢 CUDA device is available. Setting default device to CUDA and default tensor type to cuda.FloatTensor")
     else:
         print("🔴 CUDA device is not available. Setting default device to CPU and default tensor type to FloatTensor")

@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import precision_recall_fscore_support
+from sklearn.metrics import classification_report
 from snorkel.slicing import PandasSFApplier, slicing_function
 import itertools
 
@@ -58,7 +59,7 @@ def getOptimalTreshold(y_true, y_prob):
 @slicing_function()
 def selected_cats(x):
     """Segments with the `First Party Collection/Use` and `User Access, Edit and Deletion` categories."""
-    return all(cat in x.category for cat in ["First Party Collection/Use", "User Access, Edit and Deletion"])
+    return all(cat in x.category for cat in ["User Choice/Control", "User Access, Edit and Deletion"])
 
 
 @slicing_function()
@@ -79,7 +80,7 @@ def get_metrics(y_true, y_pred, classes, df=None):
     Attribution: Code adapted from https://madewithml.com/
     """
     # Performance
-    metrics = {"overall": {}, "class": {}}
+    metrics = {"overall": {}, "class": {}, "report":{}}
 
     # Overall metrics
     overall_metrics = precision_recall_fscore_support(y_true, y_pred, average="weighted")
@@ -87,6 +88,7 @@ def get_metrics(y_true, y_pred, classes, df=None):
     metrics["overall"]["recall"] = overall_metrics[1]
     metrics["overall"]["f1"] = overall_metrics[2]
     metrics["overall"]["num_samples"] = np.float64(len(y_true))
+    metrics["report"] = classification_report(y_true, y_pred, target_names=classes, output_dict = True)
 
     # Per-class metrics
     class_metrics = precision_recall_fscore_support(y_true, y_pred, average=None)
