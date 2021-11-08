@@ -200,7 +200,7 @@ def loadRunArtifacts(run_id, device=torch.device("cpu")):
     performance = gen.loadParams(fpath=Path(artifacts_dir, "metrics.json"))
 
     # Load model state
-    model = CNN.buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder))
+    model = CNN.buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder), tokenizer = tokenizer)
     model.load_state_dict(model_state)
 
     artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": model, "performance": performance}

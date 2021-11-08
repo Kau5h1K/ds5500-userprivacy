@@ -14,6 +14,7 @@ from src.config import cfg
 from src.data import preprocess
 from src.utils import gen
 from src.utils import metrics
+from src.utils import embeddings
 from src.models import Trainer
 
 class CNN(nn.Module):
@@ -25,11 +26,20 @@ class CNN(nn.Module):
         https://github.com/kyungyunlee/sampleCNN-pytorch
     """
 
-    def __init__(self, embedding_dim, vocab_size, num_filters, filter_sizes, hidden_dim, dropout_p, num_classes, padding_idx=0):
+    def __init__(self, embedding_dim, vocab_size, num_filters, filter_sizes, hidden_dim, dropout_p, num_classes, padding_idx=0, pretrained_embeddings=None, freeze_embeddings=False):
         super().__init__()
 
         # Initialize embeddings
-        self.embeddings = nn.Embedding(embedding_dim=embedding_dim, num_embeddings=vocab_size, padding_idx=padding_idx)
+        if pretrained_embeddings is None:
+            self.embeddings = nn.Embedding(embedding_dim=embedding_dim, num_embeddings=vocab_size, padding_idx=padding_idx)
+        else:
+            pretrained_embeddings = torch.from_numpy(pretrained_embeddings).float()
+            self.embeddings = nn.Embedding(
+                embedding_dim=embedding_dim, num_embeddings=vocab_size,
+                padding_idx=padding_idx, _weight=pretrained_embeddings)
+
+        if freeze_embeddings:
+            self.embeddings.weight.requires_grad = False
 
         # Conv params
         self.filter_sizes = filter_sizes
@@ -73,20 +83,25 @@ class CNN(nn.Module):
         return z
 
 
-def buildCNN(params, vocab_size, num_classes, device=torch.device("cpu")):
+def buildCNN(params, vocab_size, num_classes, tokenizer, device=torch.device("cpu")):
     """
     Call CNN class to instantiate the model
     :param params: global param dict
     :param vocab_size: total vocal size (num unique tokens)
     :param num_classes: total num of classes
+    :param tokenizer: tokenizer object fit on data
     :param device: torch device
     :return CNN model object
     """
 
+    FREEZE_EMBEDDINGS = params.freeze_embed
+    PRETRAINED_EMBEDDINGS = embeddings.processEmbeddings(params, tokenizer)
+
     filter_sizes = list(range(1, int(params.max_filter_size) + 1))
     model = CNN(embedding_dim=int(params.embedding_dim), vocab_size=int(vocab_size), num_filters=int(params.num_filters),
                 filter_sizes=filter_sizes, hidden_dim=int(params.hidden_dim),
-                dropout_p=float(params.dropout_p), num_classes=int(num_classes))
+                dropout_p=float(params.dropout_p), num_classes=int(num_classes),
+                pretrained_embeddings=PRETRAINED_EMBEDDINGS, freeze_embeddings=FREEZE_EMBEDDINGS)
     model = model.to(device)
     return model
 
@@ -201,7 +216,7 @@ def performRunCNN(dataset, params, trial = None):
     val_dataloader = val_dataset.create_dataloader(batch_size=params.batch_size)
 
     # Build and initialize CNN
-    model = buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder), device=device)
+    model = buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder), tokenizer=tokenizer, device=device)
 
     # Set CNN params for training
     print(f"Parameters: {json.dumps(params.__dict__, indent=2, cls=NumpyEncoder)}")
@@ -240,7 +255,8 @@ def objectiveCNN(dataset, params, trial):
     Attribution: boilerplate code adapted from https://github.com/optuna/optuna
     """
     # Set tuning params
-    params.embedding_dim = trial.suggest_int("embedding_dim", 128, 512)
+    if params.embedding_dim is None and params.embed is None:
+        params.embedding_dim = trial.suggest_int("embedding_dim", 128, 512)
     params.num_filters = trial.suggest_int("num_filters", 128, 512)
     params.hidden_dim = trial.suggest_int("hidden_dim", 128, 512)
     params.dropout_p = trial.suggest_uniform("dropout_p", 0.3, 0.8)

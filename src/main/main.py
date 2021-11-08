@@ -28,7 +28,7 @@ def main():
     #prepOPPCorpus.createDataset(cfg, splitcat = False, metadata = False, relational_data = False)
 
     # Define experiment name
-    experiment_name = "CNN_C_FE_U"
+    experiment_name = "CNN_W_PEG_U_FR"
     # Define run name for retraining
     run_name = "RETRAIN_BP"
 
@@ -36,7 +36,7 @@ def main():
     params = gen.createParamDict(cfg)
 
     # Perform hyper-param tuning
-    driver.performTuning(params, study_name = experiment_name, n_trials=5)
+    driver.performTuning(params, study_name = experiment_name, n_trials=50)
 
     # Train model with custom (best) params
     #params = gen.loadParams("best_param_dict.json"))
@@ -63,7 +63,7 @@ def main():
     #kill -9 $(lsof -i:5000 -t) 2> /dev/null
 
     # Delete test experiment
-    #driver.deleteMLFlowExperiment(experiment_name="optimize")
+    #driver.deleteMLFlowExperiment(experiment_name=experiment_name)
 
 
 

@@ -57,6 +57,8 @@ def initParams():
     "dropout_p": None,
     "lr": None,
     "num_epochs": None,
+    "embed": None,
+    "freeze_embed": None,
     "patience": None,
     "threshold": None,
     "num_samples": None}
@@ -83,6 +85,9 @@ def createParamDict(cfg):
     param_dict['batch_size'] = cfg.PARAM.BATCH_SIZE
     param_dict['num_epochs'] = cfg.PARAM.NUM_EPOCHS
     param_dict['patience'] = cfg.PARAM.PATIENCE
+    param_dict["embed"] = cfg.PARAM.EMBED
+    param_dict["freeze_embed"] = cfg.PARAM.FREEZE_EMBED
+    param_dict["embedding_dim"] = cfg.PARAM.EMBED_DIM
 
     return param_dict
 

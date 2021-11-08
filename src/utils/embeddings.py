@@ -9,6 +9,7 @@ import re
 import pickle
 from collections import OrderedDict
 import torch
+from src.config import cfg
 
 def cleanText(t):
     """
@@ -78,4 +79,56 @@ def Corpus2Tokens(cfg, read_pickle = True, clean = False):
 
 
 
+def loadGloVe(fpath):
+    """
+        Load glove embeddings file to a dictionary
+        :param: fpath: path of GloVe word embeddings file
+        :return: dictionary with keys and values as words and embeddings
+    """
+    embeddings = {}
+    with open(fpath, "r") as f:
+        for index, line in enumerate(f):
+            values = line.split()
+            word = values[0]
+            embedding = np.asarray(values[1:], dtype='float32')
+            embeddings[word] = embedding
+    return embeddings
 
+
+def createEmbeddingMatrix(embeddings, word_idx, embed_dim):
+    """
+        m
+        :param: fpath: path of GloVe word embeddings file
+        :return: dictionary with keys and values as words and embeddings
+    """
+    embedding_mat = np.zeros((len(word_idx), embed_dim))
+    for w, i in word_idx.items():
+        embedding_vec = embeddings.get(w)
+        if embedding_vec is not None:
+            embedding_mat[i] = embedding_vec
+    return embedding_mat
+
+
+def processEmbeddings(params, tokenizer):
+    if params.embed is None:
+        return None
+    elif params.embed == "glove":
+        embeddings_fpath = os.path.join(cfg.EMBED.OUTPUT_DPATH, "embed_mat_glove_{}.pkl".format(params.embedding_dim))
+        try:
+            print("Searching for GloVe embedding matrix in cached reserves")
+            with open(embeddings_fpath) as f:
+                embedding_mat = pickle.load(f)
+        except:
+            print("Cached GloVe Embedding matrix not found. Creating new one...")
+            embeddings_fpath = os.path.join(cfg.EMBED.GLOVE_DPATH, 'glove.6B.{}d.txt'.format(params.embedding_dim))
+            glove_embed = loadGloVe(fpath=embeddings_fpath)
+            embedding_mat = createEmbeddingMatrix(embeddings=glove_embed, word_idx = tokenizer.token_to_index, embed_dim = params.embedding_dim)
+            print (f" Created GloVe <Embeddings(words={embedding_mat.shape[0]}, dim={embedding_mat.shape[1]})>")
+            with open(embeddings_fpath, "wb") as f:
+                pickle.dump(embedding_mat, f)
+        return embedding_mat
+    elif params.embed == "fasttext":
+        embeddings_fpath = os.path.join(cfg.EMBED.FASTTEXT_FPATH)
+        pass
+    elif params.embed == "domain":
+        pass
