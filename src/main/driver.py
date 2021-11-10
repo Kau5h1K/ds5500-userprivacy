@@ -137,6 +137,7 @@ def trainwithBP(param_dict, experiment_name="EXP_TEST", run_name="RUN_TEST", sav
     # Save performance metrics and run ID to local system
     if save:
         experiment_dpath = os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_params_" + experiment_name)
+        os.makedirs(experiment_dpath, exist_ok = True)
         open(os.path.join(experiment_dpath, "run_ID.txt"), "w").write(run_id)
         gen.saveParams(performance, os.path.join(experiment_dpath, "metrics.json"))
 

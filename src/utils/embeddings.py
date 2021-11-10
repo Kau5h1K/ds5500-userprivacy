@@ -10,6 +10,8 @@ import pickle
 from collections import OrderedDict
 import torch
 from src.config import cfg
+from gensim.models import FastText, fasttext
+from gensim.test.utils import datapath
 
 def cleanText(t):
     """
@@ -77,6 +79,20 @@ def Corpus2Tokens(cfg, read_pickle = True, clean = False):
 
     return corpus_tokens_idx
 
+def loadfastText(fpath, word_idx):
+    """
+        Load fastText embeddings file to a dictionary
+        :param: fpath: path of GloVe word embeddings file
+        :return: dictionary with keys and values as words and embeddings
+    """
+    print("Loading fasttext embeddings file to a dictionary...")
+    embeddings = {}
+    embeddings_model = fasttext.load_facebook_model(fpath)
+    for word, _ in word_idx.items():
+        embedding = np.asarray(embeddings_model.wv[word])
+        embeddings[word] = embedding
+
+    return embeddings
 
 
 def loadGloVe(fpath):
@@ -85,6 +101,7 @@ def loadGloVe(fpath):
         :param: fpath: path of GloVe word embeddings file
         :return: dictionary with keys and values as words and embeddings
     """
+    print("Loading GloVe embeddings file to a dictionary...")
     embeddings = {}
     with open(fpath, "r") as f:
         for index, line in enumerate(f):
@@ -113,22 +130,34 @@ def processEmbeddings(params, tokenizer):
     if params.embed is None:
         return None
     elif params.embed == "glove":
-        embeddings_fpath = os.path.join(cfg.EMBED.OUTPUT_DPATH, "embed_mat_glove_{}.pkl".format(params.embedding_dim))
+        embeddings_fpath = os.path.join(cfg.EMBED.GLOVE_DPATH, "embed_mat_glove_{}.pkl".format(params.embedding_dim))
         try:
             print("Searching for GloVe embedding matrix in cached reserves")
-            with open(embeddings_fpath) as f:
+            with open(embeddings_fpath, "rb") as f:
                 embedding_mat = pickle.load(f)
         except:
             print("Cached GloVe Embedding matrix not found. Creating new one...")
-            embeddings_fpath = os.path.join(cfg.EMBED.GLOVE_DPATH, 'glove.6B.{}d.txt'.format(params.embedding_dim))
-            glove_embed = loadGloVe(fpath=embeddings_fpath)
+            embeddings_fpath_ip = os.path.join(cfg.EMBED.GLOVE_DPATH, 'glove.6B.{}d.txt'.format(params.embedding_dim))
+            glove_embed = loadGloVe(fpath=embeddings_fpath_ip)
             embedding_mat = createEmbeddingMatrix(embeddings=glove_embed, word_idx = tokenizer.token_to_index, embed_dim = params.embedding_dim)
             print (f" Created GloVe <Embeddings(words={embedding_mat.shape[0]}, dim={embedding_mat.shape[1]})>")
             with open(embeddings_fpath, "wb") as f:
                 pickle.dump(embedding_mat, f)
         return embedding_mat
     elif params.embed == "fasttext":
-        embeddings_fpath = os.path.join(cfg.EMBED.FASTTEXT_FPATH)
-        pass
+        embeddings_fpath = os.path.join(cfg.EMBED.FASTTEXT_DPATH, "embed_mat_fasttext_300.pkl")
+        try:
+            print("Searching for fastText embedding matrix in cached reserves")
+            with open(embeddings_fpath) as f:
+                embedding_mat = pickle.load(f)
+        except:
+            print("Cached fastText Embedding matrix not found. Creating new one...")
+            embeddings_fpath_ip = os.path.join(cfg.EMBED.FASTTEXT_DPATH, "cc.en.300.bin")
+            fasttext_embed = loadfastText(fpath=embeddings_fpath_ip, word_idx = tokenizer.token_to_index)
+            embedding_mat = createEmbeddingMatrix(embeddings=fasttext_embed, word_idx = tokenizer.token_to_index, embed_dim = params.embedding_dim)
+            print (f" Created GloVe <Embeddings(words={embedding_mat.shape[0]}, dim={embedding_mat.shape[1]})>")
+            with open(embeddings_fpath, "wb") as f:
+                pickle.dump(embedding_mat, f)
+        return embedding_mat
     elif params.embed == "domain":
         pass

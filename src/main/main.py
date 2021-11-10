@@ -28,7 +28,7 @@ def main():
     #prepOPPCorpus.createDataset(cfg, splitcat = False, metadata = False, relational_data = False)
 
     # Define experiment name
-    experiment_name = "CNN_W_PEG_U_FR"
+    experiment_name = "CNN_W_FE_M"
     # Define run name for retraining
     run_name = "RETRAIN_BP"
 
@@ -39,7 +39,7 @@ def main():
     driver.performTuning(params, study_name = experiment_name, n_trials=50)
 
     # Train model with custom (best) params
-    #params = gen.loadParams("best_param_dict.json"))
+    #params = gen.loadParams(os.path.join(cfg.PARAM.CUSTOM_PARAM_FPATH))
     driver.trainwithBP(param_dict = None, experiment_name = experiment_name, run_name = run_name, save=True)
 
     # Predict segment with custom run_id

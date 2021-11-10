@@ -79,8 +79,8 @@ _C.EMBED.CORPUS_TOKEN_IDX_FPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "corpus_to
 
 # glove embeddings folder
 _C.EMBED.GLOVE_DPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "glove", "glove.6B")
-# fastText embeddings file
-_C.EMBED.FASTTEXT_FPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "fastText", "cc.en.300.vec")
+# fastText embeddings folder
+_C.EMBED.FASTTEXT_DPATH = os.path.join(_C.EMBED.OUTPUT_DPATH, "fastText")
 
 ########################################################################################################################
 ########################################################################################################################
@@ -91,7 +91,7 @@ _C.PARAM = CN()
 _C.PARAM.DF_FPATH = os.path.join(_C.DATA.OUTPUT.ROOT_DPATH, "dataset.pkl")
 
 _C.PARAM.SEED = 2021
-_C.PARAM.DATASET = "union"
+_C.PARAM.DATASET = "majority"
 _C.PARAM.CUDA = True
 _C.PARAM.LOWER = True
 _C.PARAM.STEM = False
@@ -101,13 +101,13 @@ _C.PARAM.MAX_FILTER_SIZE = 5
 _C.PARAM.BATCH_SIZE = 128
 _C.PARAM.NUM_EPOCHS = 200
 _C.PARAM.PATIENCE = 10
-_C.PARAM.EMBED = "glove"  # None, "glove", "fasttext", "domain"
-_C.PARAM.FREEZE_EMBED = True
-_C.PARAM.EMBED_DIM = 300
+_C.PARAM.EMBED = None  # None, "glove", "fasttext", "domain"
+_C.PARAM.FREEZE_EMBED = False
+_C.PARAM.EMBED_DIM = None
 _C.PARAM.BEST_PARAM_DPATH = (Path(__file__).resolve().parent / "best_params").as_posix()
 os.makedirs(_C.PARAM.BEST_PARAM_DPATH, exist_ok = True)
 
-_C.PARAM.BEST_PARAM_FPATH = (Path(__file__).resolve().parent / "best_params").as_posix()
+_C.PARAM.CUSTOM_PARAM_FPATH = (Path(__file__).resolve().parent / "custom_param_dict.json").as_posix()
 ########################################################################################################################
 ########################################################################################################################
 

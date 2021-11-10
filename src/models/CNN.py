@@ -82,6 +82,74 @@ class CNN(nn.Module):
 
         return z
 
+class CNN_V2(nn.Module):
+    """
+    Class to define CNN architecture
+    Attribution: Boilerplate code adapted from
+        https://github.com/yunjey/pytorch-tutorial
+        https://github.com/MorvanZhou/PyTorch-Tutorial
+        https://github.com/kyungyunlee/sampleCNN-pytorch
+    """
+
+    def __init__(self, embedding_dim, vocab_size, num_filters, filter_sizes, hidden_dim, dropout_p, num_classes, padding_idx=0, pretrained_embeddings=None, freeze_embeddings=False):
+        super().__init__()
+
+        # Initialize embeddings
+        if pretrained_embeddings is None:
+            self.embeddings = nn.Embedding(embedding_dim=embedding_dim, num_embeddings=vocab_size, padding_idx=padding_idx)
+        else:
+            pretrained_embeddings = torch.from_numpy(pretrained_embeddings).float()
+            self.embeddings = nn.Embedding(
+                embedding_dim=embedding_dim, num_embeddings=vocab_size,
+                padding_idx=padding_idx, _weight=pretrained_embeddings)
+
+        if freeze_embeddings:
+            self.embeddings.weight.requires_grad = False
+
+        self.convolutions = nn.ModuleList([nn.Conv2d(1, num_filters, (k, embedding_dim)) for k in filter_sizes])
+
+        self.relu = nn.ReLU()
+
+        self.drop_out = nn.Dropout(p=dropout_p)
+
+        units = [num_filters* len(filter_sizes)] + [hidden_dim]
+
+        self.linear_layers = nn.ModuleList([nn.Linear(units[k], units[k+1]) for k in range(len(units) - 1)])
+
+        self.linear_last = nn.Linear(hidden_dim, num_classes)
+
+    def forward(self, inputs, channel_first=False):
+        #size(N,1,length) to size(N,1,length,dims)
+        (x,) = inputs
+        x = x.unsqueeze(1)
+        x = self.embeddings(x)
+
+        #size(N,1,length,dims) to size(N,1,length)
+
+        x = [self.relu(conv(x)).squeeze(3) for conv in self.convolutions]
+
+        #size(N,1,length) to (N, Co * len(Ks))
+
+        x = [F.max_pool1d(i, i.size(2)).squeeze(2) for i in x]
+        # x = [F.avg_pool1d(i, i.size(2)).squeeze(2) for i in x]
+
+        x = torch.cat(x, 1)
+
+        #size(N, Co * len(Ks)) to size(N, Hu_last)
+
+        for linear in self.linear_layers:
+
+            x = linear(x)
+
+            x = self.relu(x)
+
+        #size(N, Hu_last) to size(N, C)
+
+        x = self.drop_out(x)
+        x = self.linear_last(x)
+
+        return x
+
 
 def buildCNN(params, vocab_size, num_classes, tokenizer, device=torch.device("cpu")):
     """
@@ -99,7 +167,7 @@ def buildCNN(params, vocab_size, num_classes, tokenizer, device=torch.device("cp
 
     filter_sizes = list(range(1, int(params.max_filter_size) + 1))
     model = CNN(embedding_dim=int(params.embedding_dim), vocab_size=int(vocab_size), num_filters=int(params.num_filters),
-                filter_sizes=filter_sizes, hidden_dim=int(params.hidden_dim),
+                filter_sizes= filter_sizes, hidden_dim=int(params.hidden_dim),
                 dropout_p=float(params.dropout_p), num_classes=int(num_classes),
                 pretrained_embeddings=PRETRAINED_EMBEDDINGS, freeze_embeddings=FREEZE_EMBEDDINGS)
     model = model.to(device)
