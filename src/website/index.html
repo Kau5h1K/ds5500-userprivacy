@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Textual Saliency</title>
+    <meta name="description" content="DETECTING TEXTUAL SALIENCY IN PRIVACY POLICY">
+    <meta name="author" content="Kaushik Nishtala, Shubhanshu Gupta">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="images/site_img/favicon_4.ico" type="image/x-icon">
+    <link rel="icon" href="images/site_img/favicon_4.ico" type="image/x-icon">
+
+</head>
+
+<body id="top">
+
+    <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+
+
+        <nav class="header-nav">
+
+            <a href="#0" class="header-nav__close" title="close"><span>Close</span></a>
+
+            <div class="header-nav__content">
+                <h3>Navigation</h3>
+                
+                <ul class="header-nav__list">
+                    <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li>
+                    <li><a class="smoothscroll"  href="#about" title="about">Privacy Policies</a></li>
+                    <li><a class="smoothscroll"  href="#objective" title="services">Objectives</a></li>
+                    <li><a class="smoothscroll"  href="#clients" title="works">Our Data and Models</a></li>
+                    <li><a class="smoothscroll"  href="#analyze" title="contact">Analyze Policies</a>
+                    <ul>
+                    <li><a class="smoothscroll"  href="#contact" title="contact">General</a></li>
+                    <li><a class="smoothscroll"  href="#contact" title="contact">Policy-Specific</a></li>
+                    </ul>
+                    </li>
+                </ul>
+    
+                <p>This website was developed as part of a final Capstone under the Northeastern University MSDS program by Kaushik Nishtala, and Shubhanshu Gupta.</p> </br>
+                <p>We'd like to thank our project advisor, Kylie Ariel Bemis: lecturer at the Khoury College of Computer Sciences at Northeastern University.</p>
+
+                <ul class="header-nav__social">
+                    <li>
+                        <a href="https://github.com/Kau5h1K/ds5500-userprivacy" target="_blank"><i class="fa fa-github"></i></a>
+                    </li>
+                </ul>
+
+            </div> <!-- end header-nav__content -->
+
+        </nav>  <!-- end header-nav -->
+
+        <a class="header-menu-toggle" href="#0">
+            <span class="header-menu-text">Menu</span>
+            <span class="header-menu-icon"></span>
+        </a>
+
+    </header> <!-- end s-header -->
+
+
+    <!-- home
+    ================================================== -->
+    <section id="home" class="s-home target-section" data-parallax="scroll" data-natural-width=3000 data-natural-height=2000 data-position-y=center>
+
+        <div class="overlay"></div>
+        <div class="shadow-overlay"></div>
+
+        <div class="home-content">
+
+            <div class="row home-content__main">
+
+                <h1>
+                    DETECTING TEXTUAL SALIENCY <br>
+                    IN PRIVACY POLICY
+                </h1>
+
+                <h3>Developed by Shubhanshu Gupta and Kaushik Nishtala</h3>
+
+
+                <img src='images/site_img/home_intro.png' alt="img">
+
+                <div class="home-content__buttons">
+                    <a href="#analyze" class="smoothscroll btn btn--stroke">
+                        Analyze Policies
+                    </a>
+                    <a href="#about" class="smoothscroll btn btn--stroke">
+                        Learn More
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="home-content__scroll">
+                <a href="#about" class="scroll-link smoothscroll">
+                    <span>Scroll Down</span>
+                </a>
+            </div>
+
+            <div class="home-content__line"></div>
+
+        </div> <!-- end home-content -->
+
+
+        <ul class="home-social">
+            <li>
+                <a href="https://github.com/Kau5h1K/ds5500-userprivacy" target="_blank"><i class="fa fa-github" aria-hidden="true"></i><span>Github</span></a>
+            </li>
+        </ul>
+        <!-- end home-social -->
+
+    </section> <!-- end s-home -->
+
+
+    <!-- about
+    ================================================== -->
+    <section id='about' class="s-about">
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">What is a </h3>
+                <h1 class="display-1 display-1--light">PRIVACY POLICY?</h1>
+            </div>
+        </div> <!-- end section-header -->
+
+        <div class="row about-desc" data-aos="fade-up">
+            <div class="col-full">
+                <img src="images/site_img/privpol.png" alt="description of privacy policy" />
+            </div>
+        </div>
+        <br><br><br><br><br>
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">Why do we </h3>
+                <h1 class="display-1 display-1--light">NEED THEM?</h1>
+            </div>
+        </div>
+
+        <div class="row about-desc" data-aos="fade-up">
+            <div class="col-full">
+                <p> It's required by law. Since people increasingly value their privacy, a privacy policy is essential to enforce transparency and build trust between organizations and consumers. </p>
+            </div>
+        </div>
+
+        <br><br><br><br><br>
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">What do</h3>
+                <h1 class="display-1 display-1--light">THEY CONTAIN?</h1>
+            </div>
+        </div>
+
+        <div class="row about-desc" data-aos="fade-up">
+            <div class="col-full">
+                <p> It depends on the nature of the business, their location, the laws applicable to them, among many other factors.
+                    However, the following practice categories are fairly standard and can be found in most privacy policies.
+                </p>
+            </div>
+        </div>
+
+        <div class="row services-list block-1-2 block-tab-full">
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat1.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">First Party Collection</h3>
+                    <p>Describes data collection or data use by the company/organization owning the product or service.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat2.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Third Party Sharing</h3>
+                    <p>Describes data sharing with third parties or data collection by third parties.
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon"><img src="images/site_img/cat3.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Data Security</h3>
+                    <p>Describes how users’ information is secured and protected, e.g., from confidentiality, integrity, or availability breaches.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat4.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">User Access, Edit & Deletion</h3>
+                    <p>Describes practices that allow users to access, edit or delete the data that the company/organization has about them.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat5.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Data Retention</h3>
+                    <p>Describes practices that specify the retention period for collected user information.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat6.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">User Choice/Control</h3>
+                    <p>Describes general choices and control options available to users.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat7.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Policy Change</h3>
+                    <p>Describes practices concerning if and how users will be informed of changes to its privacy policy, including any choices offered to users.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat8.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Do Not Track</h3>
+                    <p>Describes if and how Do Not Track signals (DNT) for online tracking and advertising are honored.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat9.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Specific Audiences</h3>
+                    <p>Specific audiences, such as children or international users, for which the company/organization may provide special provisions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <img src="images/site_img/cat10.png" width="50" height="60" />
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Other</h3>
+                    <p>Any miscellaneous practices that are not covered in the above categories.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <img src="images/site_img/structure.png" width="50" height="60" />
+                <h3 class="struct-desc">Privacy Policy Structure</h3>
+            </div>
+        </div>
+
+
+        <div class="row about-desc-v2" data-aos="fade-up">
+            <div class="col-full">
+                <p> Privacy policies are made up of smaller sections or paragraphs, called "segments". Each of these segments, within a company's
+                    privacy policy, provides information about one or more of the aforementioned privacy practice categories.
+                </p>
+            </div>
+        </div>
+
+        <div class="about__line"></div>
+
+    </section> <!-- end s-about -->
+
+
+
+
+    <!-- objective
+    ================================================== -->
+    <section id='objective' class="s-services">
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">What are</h3>
+                <h1 class="display-1 display-1--light">OUR OBJECTIVES?</h1>
+            </div>
+        </div> <!-- end section-header -->
+
+
+        <div class="row about-desc" data-aos="fade-up">
+            <div class="col-full">
+                <p> The primary objective of this project lies in communicating a high level and a more granular
+                    breakdown of privacy policy practices. The functionality is twofold as shown in the infographic below.
+                </p>
+                <br><br>
+
+            </div>
+        </div>
+        <img src="images/site_img/obj.png" class="obj"/>
+
+    </section> <!-- end objective -->
+
+
+
+    <!-- clients
+    ================================================== -->
+    <section id="clients" class="s-clients">
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">OUR</h3>
+                <h1 class="display-1 display-1--light">DATA & MODELS</h1>
+            </div>
+        </div> <!-- end section-header -->
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="row">
+                <h1 style="color: #1E404C">DATASETS USED</h1>
+                <div class="column" style="padding-right: 10px;">
+                    <h1 style="color : #1E404C; text-align: center;">Online Privacy Policies <a href="https://www.usableprivacy.org/data" target="_blank"><img src='images/site_img/arrow.png' style="width:35px;height:35px"></a> </h1>
+                    <h3 style="margin-top: 1rem;color : #D3E7EE;" class="subhead" >Training Data</h3>
+                    <p  class = "dataset-desc">
+                        The Online Privacy Policies (OPP-115) corpus is a collection of 115 website privacy policies labeled by experts to specify data practices within the policy.
+                    </p>
+                </div>
+
+                <div class="column" style="padding-left: 10px;">
+
+                    <h1 style="color : #1E404C; text-align: center;">PrivaSeer Corpus  <a href="https://privaseer.ist.psu.edu/about/" target="_blank"><img src='images/site_img/arrow.png' style="width:35px;height:35px"></a> </h1>
+                    <h3 style="margin-top: 1rem;color : #D3E7EE;" class="subhead">Word Embeddings Corpus</h3>
+                    <p  class="dataset-desc">
+                        PrivaSeer corpus is an un-labeled dataset of over 1,005,380 English language privacy policies indexed and crawled based on website URLs.
+                    </p>
+
+                </div>
+                <div class="row about-stats stats block-1-4 block-m-1-2 block-mob-full" data-aos="fade-up">
+
+                    <div class="col-block stats__col ">
+                        <div class="stats__count">115</div>
+                        <h5>Labeled Documents</h5>
+                    </div>
+                    <div class="col-block stats__col">
+                        <div class="stats__count">1005380</div>
+                        <h5>Unlabelled Documents</h5>
+                    </div>
+                    <div class="col-block stats__col">
+                        <div class="stats__count">12</div>
+                        <h5>Data Practice Categories</h5>
+                    </div>
+                    <div class="col-block stats__col">
+                        <div class="stats__count">3</div>
+                        <h5>Annotators Per Document</h5>
+                    </div>
+                </div> <!-- end about-stats -->
+            </div>
+        </div>
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="row">
+
+                <h1 style = "color: #1E404C">Model Architecture</h1>
+
+                <p style = "font-size: 1.5em; color : #D3E7EE; text-align: left;">Placeholder text
+                    <br></br>
+                    Placeholder text
+                </p>
+
+                <img src='images/modelsection.png' alt="Model Architecture Infographic">
+            </div>
+
+            <div class="row"></br></br>
+                <h1 style = "color: #1E404C">Model Results</h1>
+                <table id="results_table">
+                    <tbody>
+                    <tr  style="height: 23px;">
+                        <td  style="height: 23px; text-align: left;color: #1E404C; font-size: 22px;"><strong>Model</strong></td>
+                        <td  style="height: 23px; text-align: right;color: #1E404C; font-size: 22px;"><strong>Precision</strong></td>
+                        <td  style="height: 23px; text-align: right;color: #1E404C; font-size: 22px;"><strong>Recall</strong></td>
+                        <td  style="height: 23px; text-align: right; font-size: 22px; color: #D3E7EE;"><strong>F1-Score</strong></td>
+                        <td  style="height: 23px; text-align: right; font-size: 22px; color: #D4D4D4;"><strong>Baseline F1-Score</strong></td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">First Party Collection</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.85</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.87</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE; font-size: 20px;">0.86</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.82</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Third Party Sharing</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.76</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.81</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.87</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.53</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">User Choice/Control</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.84</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.83</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.83</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.63</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">User Access, Edit and Deletion</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.95</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.81</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.87</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.87</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Data Retention</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.82</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.82</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.82</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.75</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Data Security</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.99</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.95</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.97</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.94</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Policy Change</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.99</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.95</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.97</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.94</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Do Not Tack</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.99</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.95</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.97</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.94</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <td style="height: 23px;color: #1E404C;">Specific Audiences</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.99</td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;">0.95</td>
+                        <td style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;">0.97</td>
+                        <td style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;">0.94</td>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <th style="height: 23px;color: #1E404C;"><strong>MICRO AVERAGE</strong></th>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;"><strong>0.99</strong></td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;"><strong>0.95</strong></td>
+                        <th style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;"><strong>0.97</strong></th>
+                        <th style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;"><strong>0.94</strong></th>
+                    </tr>
+                    <tr style="height: 23px;">
+                        <th style="height: 23px;color: #1E404C;"><strong>WEIGHTED AVERAGE</strong></th>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;"><strong>0.99</strong></td>
+                        <td style="height: 23px; text-align: right;color: #1E404C;font-size: 20px;"><strong>0.95</strong></td>
+                        <th style="height: 23px; text-align: right; color: #D3E7EE;font-size: 20px;"><strong>0.97</strong></th>
+                        <th style="height: 23px; text-align: right; color: #D4D4D4;font-size: 20px;"><strong>0.94</strong></th>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+
+        <div class="row clients-outer" data-aos="fade-up">
+            <div class="col-full">
+                <div class="clients">
+                    
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/apple.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/atom.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/blackberry.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/dropbox.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/envato.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/firefox.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/joomla.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/magento.png" /></a>
+                     
+                </div> <!-- end clients -->
+            </div> <!-- end col-full -->
+        </div> <!-- end clients-outer -->
+
+        <div class="row clients-testimonials" data-aos="fade-up">
+            <div class="col-full">
+                <div class="testimonials">
+
+                    <div class="testimonials__slide">
+
+                        <p>Qui ipsam temporibus quisquam vel. Maiores eos cumque distinctio nam accusantium ipsum.
+                        Laudantium quia consequatur molestias delectus culpa facere hic dolores aperiam. Accusantium quos qui praesentium corpori.
+                        Excepturi nam cupiditate culpa doloremque deleniti repellat.</p>
+
+                        <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonials__avatar">
+                        <div class="testimonials__info">
+                            <span class="testimonials__name">Tim Cook</span>
+                            <span class="testimonials__pos">CEO, Apple</span>
+                        </div>
+
+                    </div>
+
+                    <div class="testimonials__slide">
+
+                        <p>Excepturi nam cupiditate culpa doloremque deleniti repellat. Veniam quos repellat voluptas animi adipisci.
+                        Nisi eaque consequatur. Quasi voluptas eius distinctio. Atque eos maxime. Qui ipsam temporibus quisquam vel.</p>
+
+                        <img src="images/avatars/user-05.jpg" alt="Author image" class="testimonials__avatar">
+                        <div class="testimonials__info">
+                            <span class="testimonials__name">Sundar Pichai</span>
+                            <span class="testimonials__pos">CEO, Google</span>
+                        </div>
+
+                    </div>
+
+                    <div class="testimonials__slide">
+
+                        <p>Repellat dignissimos libero. Qui sed at corrupti expedita voluptas odit. Nihil ea quia nesciunt. Ducimus aut sed ipsam.
+                        Autem eaque officia cum exercitationem sunt voluptatum accusamus. Quasi voluptas eius distinctio.</p>
+
+                        <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonials__avatar">
+                        <div class="testimonials__info">
+                            <span class="testimonials__name">Satya Nadella</span>
+                            <span class="testimonials__pos">CEO, Microsoft</span>
+                        </div>
+
+                    </div>
+
+                </div><!-- end testimonials -->
+
+            </div> <!-- end col-full -->
+        </div> <!-- end client-testimonials -->
+
+    </section> <!-- end s-clients -->
+
+
+    <!-- Analyze Policies
+    ================================================== -->
+    <section id='analyze' class="s-services">
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">DIFFERENT WAYS TO</h3>
+                <h1 class="display-1 display-1--light">ANALYZE POLICIES</h1>
+            </div>
+        </div> <!-- end section-header -->
+
+
+        <div class="intro-wrap">
+
+            <div class="row section-header has-bottom-sep" data-aos="fade-up">
+                <div class="col-full">
+                    <img src="images/site_img/one.png" width="60" height="60" />
+                    <h1 class="display-2 display-2--light" style="font-size:2em;font-family: Futura, sans-serif;">Explore general trends and analyses involving following data practice categories:</h1>
+                    <div class="home-content__buttons">
+                        <p align = "center">
+                            <a href="#single_co" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                        border:  0.2rem solid #1E404C" >
+                                First Party Data Collection and Use
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#compare_map" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                Third Party Sharing and Collection
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                User Choice and Control
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                User Access, Edit and Deletion
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                Data Retention
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                Data Security
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                Policy Change
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                Do Not Track
+                            </a>
+                        </p>
+                        <p align = "center">
+                            <a href="#diff_ind" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                            border:  0.2rem solid #1E404C" >
+                                International and Specific Audiences
+                            </a>
+                        </p>
+                    </div>
+                    <!--<img src="images/shortchart.JPG" width="500" height="600"> -->
+                </div>
+            </div> <!-- end section-header -->
+
+            <div class="row section-header has-bottom-sep" data-aos="fade-up">
+                <div class="col-full">
+                    <img src="images/site_img/two.png" width="60" height="60" />
+            <h1 class="display-2 display-2--light" style="font-size:2em;font-family: Futura, sans-serif;">Search and analyze an individual privacy policy.</h1>
+            <div class="home-content__buttons">
+                <p align = "center">
+                    <a href="#single_co" class="smoothscroll btn btn--stroke" style="color:#1E404C; width: 450px;
+                        border:  0.2rem solid #1E404C" >
+                        Policy-specific Analyses
+                    </a>
+                </p>
+            </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section> <!-- end analyze -->
+
+
+
+
+    <!-- footer
+   ================================================== -->
+    <footer>
+
+        <div class="row footer-main">
+
+            <div class="col-six tab-full left footer-desc">
+
+                <h3 class="subhead--light">MSDS DS5500 Capstone</h3>
+                <p>This project was developed as part of a final Capstone under the Northeastern University MSDS program. It provides regulators and consumers a platform to quickly view and analyze a higher level and a more granular break down of data practices involved in privacy policies. </p>
+
+                <p>  By leveraging modern machine learning and natural language processing techniques, we were able to classify policy segments into pre-defined data practice categories. In addition, we were able to implement a freeform Question-Answering system to enable quick extraction of salient information from these documents.</p>
+
+            </div>
+
+            <div class="col-six tab-full right footer-subscribe">
+
+                <h3 class="subhead--light">Disclaimer</h3>
+                <p>All analysis is presented for information purposes. We stress that this project is not intended to replace the privacy policy – as a legal document –
+                    with our machine generated predictions and interpretations. Furthermore, the employed machine learning algorithms, despite their overall performances,
+                    may occasionally reflect inaccurate trends and patterns within a company's privacy policy.
+                </p>
+
+
+            </div>
+
+        </div> <!-- end footer-main -->
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+
+                <div class="go-top">
+                    <a class="smoothscroll" title="Back to Top" href="#top"><i class="icon-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+
+
+
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader">
+            <div class="line-scale-pulse-out">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
