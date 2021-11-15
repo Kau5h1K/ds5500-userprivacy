@@ -2290,10 +2290,10 @@ html.no-csstransitions .home-content__main {
 
 .stats__count {
     font-family: "montserrat-bold", sans-serif;
-    font-size: 5rem;
+    font-size: 4rem;
     line-height: 1;
     color: #65AAC3;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
