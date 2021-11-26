@@ -15,7 +15,7 @@ from skmultilearn.model_selection import IterativeStratification
 
 
 
-def cleanText(text, lower=True, stem=False, remove_stopwords=False, isolate_sym = True, remove_alphanum = True):
+def cleanText(text, lower=True, stem=False, remove_stopwords=False, isolate_sym = True, remove_alphanum = False):
     """
     Function to clean the segment text
     :param text: text to process
