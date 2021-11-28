@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "src/com/lab/libraries/jsoup-1.11.2.jar",
+        "src/com/lab/libraries/stanford-corenlp-3.8.0.jar",
+        "src/com/lab/libraries/weka-stable-3.8.0.jar"
+    ]
+}
