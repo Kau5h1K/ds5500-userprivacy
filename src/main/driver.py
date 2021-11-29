@@ -4,18 +4,20 @@ import warnings
 from argparse import Namespace
 from pathlib import Path
 import pandas as pd
-
+import numpy as np
 import mlflow
 import optuna
 import torch
 from numpyencoder import NumpyEncoder
 from optuna.integration.mlflow import MLflowCallback
 import os
+import pickle
 
 from src.config import cfg
 from src.data import preprocess
 from src.utils import gen
 from src.models import CNN
+from src import models
 
 # Ignore warning
 warnings.filterwarnings("ignore")
@@ -128,6 +130,7 @@ def trainwithBP(param_dict, experiment_name="EXP_TEST", run_name="RUN_TEST", sav
         with tempfile.TemporaryDirectory() as dp:
             gen.saveParams(vars(artifacts["params"]), Path(dp, "params.json"), cls=NumpyEncoder)
             gen.saveParams(performance, Path(dp, "metrics.json"))
+            gen.savePickle(artifacts["perlabel_thresholds"], Path(dp, "thresholds.pkl"))
             artifacts["label_encoder"].save(Path(dp, "label_encoder.json"))
             artifacts["tokenizer"].save(Path(dp, "tokenizer.json"))
             torch.save(artifacts["model"].state_dict(), Path(dp, "model.pt"))
@@ -155,6 +158,44 @@ def predictSegment(segment, run_id):
     print(json.dumps(prediction, indent=2))
 
     return prediction
+
+
+def productionPredict(segments, run_id, multi_threshold = True):
+    """
+    Utility func to classify a segment into cats
+    :param segment: a sequence of text
+    :param run_id: MLFlow run to use
+    :param multi_threshold: Predict using label specific thresholds
+    :return prediction
+    """
+    # Load artifacts from the run and predict
+    artifacts = loadRunArtifacts(run_id=run_id)
+    params = artifacts["params"]
+    label_encoder = artifacts["label_encoder"]
+    tokenizer = artifacts["tokenizer"]
+    model = artifacts["model"]
+    thresholds_list = artifacts["perlabel_thresholds"]
+    device = gen.setDevice(cuda=params.cuda)
+
+    # Prepare dataset into model readable format
+    preprocessed_segments = [preprocess.cleanText(segment, lower=params.lower, stem=params.stem) for segment in segments]
+    X = np.array(tokenizer.texts_to_sequences(preprocessed_segments), dtype="object")
+    y_blank = np.zeros((len(X), len(label_encoder)))
+    dataset = CNN.CNNDataset(X=X, y=y_blank, max_filter_size=int(params.max_filter_size))
+    dataloader = dataset.create_dataloader(batch_size=int(params.batch_size))
+
+    # Get model predictions
+    trainer = models.Trainer(model=model, device=device)
+    _, y_prob = trainer.predict_step(dataloader)
+    if not multi_threshold:
+        y_pred = [np.where(prob >= float(params.threshold), 1, 0) for prob in y_prob]
+    else:
+        y_pred = [np.where(prob >= np.array(thresholds_list), 1, 0) for prob in y_prob]
+
+    categories = label_encoder.decode(y_pred)
+    predictions = [{"input_text": segments[i], "preprocessed_text": preprocessed_segments[i], "predicted_tags": categories[i]} for i in range(len(categories))]
+
+    return predictions
 
 
 def getRunParams(run_id):
@@ -197,6 +238,7 @@ def loadRunArtifacts(run_id, device=torch.device("cpu")):
     params = Namespace(**gen.loadParams(fpath=os.path.join(artifacts_dir, "params.json")))
     label_encoder = preprocess.LabelEncoder.load(fp=Path(artifacts_dir, "label_encoder.json"))
     tokenizer = preprocess.Tokenizer.load(fp=Path(artifacts_dir, "tokenizer.json"))
+    perlabel_thresholds = gen.loadPickle(Path(artifacts_dir, "thresholds.pkl"))
     model_state = torch.load(Path(artifacts_dir, "model.pt"), map_location=device)
     performance = gen.loadParams(fpath=Path(artifacts_dir, "metrics.json"))
 
@@ -204,7 +246,7 @@ def loadRunArtifacts(run_id, device=torch.device("cpu")):
     model = CNN.buildCNN(params=params, vocab_size=len(tokenizer), num_classes=len(label_encoder), tokenizer = tokenizer)
     model.load_state_dict(model_state)
 
-    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": model, "performance": performance}
+    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": model, "performance": performance, "perlabel_thresholds": perlabel_thresholds}
 
     return artifacts
 

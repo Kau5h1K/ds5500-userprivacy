@@ -51,10 +51,16 @@ def getOptimalTreshold(y_true, y_prob):
     """
     prec, rec, thr = precision_recall_curve(y_true.ravel(), y_prob.ravel())
     f1_list = (2 * prec * rec) / (prec + rec)
-    optim_threshold = thr[np.argmax(f1_list)]
-    return optim_threshold
+    optim_threshold_all = thr[np.argmax(f1_list)]
 
+    optim_threshold_list = []
+    for i in range(y_true.shape[1]):
+        prec, rec, thr = precision_recall_curve(y_true[:,i].ravel(), y_prob[:,i].ravel())
+        f1_list = (2 * prec * rec) / (prec + rec)
+        optim_threshold = thr[np.argmax(f1_list)]
+        optim_threshold_list.append(optim_threshold)
 
+    return optim_threshold_all, optim_threshold_list
 
 @slicing_function()
 def selected_cats(x):

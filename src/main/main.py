@@ -33,22 +33,27 @@ def main():
     run_name = "RETRAIN_BP"
 
     # Create global param dict for modeling
-    params = gen.createParamDict(cfg)
+    #params = gen.createParamDict(cfg)
 
     # Perform hyper-param tuning
-    driver.performTuning(params, study_name = experiment_name, n_trials=50)
+    #driver.performTuning(params, study_name = experiment_name, n_trials=50)
 
-    # Train model with custom (best) params
+    # Train model with custom (best) params (leave as None to automatically infer best params)
     #params = gen.loadParams(os.path.join(cfg.PARAM.CUSTOM_PARAM_FPATH))
-    driver.trainwithBP(param_dict = None, experiment_name = experiment_name, run_name = run_name, save=True)
+    #driver.trainwithBP(param_dict = params, experiment_name = experiment_name, run_name = run_name, save=True)
 
     # Predict segment with custom run_id
-    #run_id = gen.loadID(os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "run_ID.txt"))
-    # text = "When You access the Service by or through a mobile device, We may collect certain information automatically, " \
-    #       "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
-    #        " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
-    #        "and other diagnostic data."
+    experiment_dpath = os.path.join(cfg.PARAM.BEST_PARAM_DPATH, "best_params_" + experiment_name)
+    run_id = gen.loadID(os.path.join(experiment_dpath, "run_ID.txt"))
+    text = ["When You access the Service by or through a mobile device, We may collect certain information automatically, " \
+           "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
+            " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
+            "and other diagnostic data.", "When You access the Service by or through a mobile device, We may collect certain information automatically, " \
+                                          "including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of" \
+                                          " Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers " \
+                                          "and other diagnostic data."]
     #driver.predictSegment(text, run_id)
+    driver.productionPredict(text, run_id, multi_threshold = True)
 
     # Get params of custom run_id
     #driver.getRunParams(run_id)

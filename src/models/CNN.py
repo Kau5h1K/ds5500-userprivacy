@@ -301,10 +301,10 @@ def performRunCNN(dataset, params, trial = None):
 
     # Find optimal threshold
     _, y_true, y_prob = trainer.eval_step(dataloader=train_dataloader)
-    params.threshold = metrics.getOptimalTreshold(y_true=y_true, y_prob=y_prob)
+    params.threshold, perlabel_thresholds = metrics.getOptimalTreshold(y_true=y_true, y_prob=y_prob)
 
     # Evaluate model
-    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": best_model, "loss": best_val_loss, 'train_losses':train_losses, 'val_losses': val_losses}
+    artifacts = {"params": params, "label_encoder": label_encoder, "tokenizer": tokenizer, "model": best_model, "loss": best_val_loss, 'train_losses':train_losses, 'val_losses': val_losses, 'perlabel_thresholds': perlabel_thresholds}
     device = torch.device("cpu")
     y_true, y_pred, performance = evaluateCNN(df=test_df, artifacts=artifacts)
     artifacts["metrics"] = performance

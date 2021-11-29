@@ -148,3 +148,13 @@ def saveParams(params, fpath, cls=None, sortkeys=False):
     """
     with open(fpath, "w") as f:
         json.dump(params, indent=2, fp=f, cls=cls, sort_keys=sortkeys)
+
+
+def savePickle(obj, fpath):
+    with open(fpath, "wb") as f:
+        pickle.dump(obj, f)
+
+
+def loadPickle(fpath):
+    with open(fpath, "rb") as f:
+        return pickle.load(f)

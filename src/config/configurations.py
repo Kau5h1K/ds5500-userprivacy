@@ -97,13 +97,13 @@ _C.PARAM.LOWER = True
 _C.PARAM.STEM = False
 _C.PARAM.TRAIN_SIZE = 0.7
 _C.PARAM.CHAR_LEVEL = False
-_C.PARAM.MAX_FILTER_SIZE = 5
+_C.PARAM.MAX_FILTER_SIZE = 1
 _C.PARAM.BATCH_SIZE = 128
-_C.PARAM.NUM_EPOCHS = 200
+_C.PARAM.NUM_EPOCHS = 1
 _C.PARAM.PATIENCE = 10
 _C.PARAM.EMBED = None  # None, "glove", "fasttext", "domain"
 _C.PARAM.FREEZE_EMBED = False
-_C.PARAM.EMBED_DIM = None
+_C.PARAM.EMBED_DIM = 300
 _C.PARAM.BEST_PARAM_DPATH = (Path(__file__).resolve().parent / "best_params").as_posix()
 os.makedirs(_C.PARAM.BEST_PARAM_DPATH, exist_ok = True)
 
