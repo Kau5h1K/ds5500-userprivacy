@@ -877,6 +877,12 @@ input[type="button"].btn--primary:focus {
     color: #65AAC3;
 }
 
+.btn--stroke1, button.btn--stroke1 {
+    background: #65AAC3 !important;
+    border: 0.2rem solid #65AAC3;
+    color: #65AAC3;
+}
+
 .btn--stroke:hover, button.btn--stroke:hover {
     border: 0.2rem solid #000000;
     color: #000000;
@@ -1653,6 +1659,34 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 
+.tooltip-inner {
+    background-color: #65AAC3 !important;
+    color: #1E404C ;
+    font-size: 1.1em;
+    border-color: #1E404C;
+    font-family: "montserrat-regular", sans-serif;;
+    border-width: 0.3em;
+    border-style: solid;
+    margin-left: 20px;
+}
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+    border-top-color: #000000 !important;
+}
+
+.bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
+    border-right-color: #000000 !important;
+}
+
+
+.bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+    border-bottom-color: #000000 !important;
+}
+
+
+.bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
+    border-left-color: #000000 !important;
+}
+
 /* ------------------------------------------------------------------- 
  * ## mobile menu toggle 
  * ------------------------------------------------------------------- */
@@ -1843,6 +1877,34 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     padding-top: 6rem;
     text-align: center;
 }
+
+.ways_to_analyze {
+    padding-top: 3rem;
+    text-align: center;
+}
+
+.ways_to_analyze .btn {
+    width: 215px;
+    border-color: #1E404C;
+    color: #1E404C;
+
+    margin: 1.5rem 1.5rem 0 0;
+    letter-spacing: .25rem;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.ways_to_analyze .btn:last-child {
+    margin-right: 0;
+}
+
+.ways_to_analyze .btn:hover,
+.ways_to_analyze .btn:focus {
+    background: transparent !important;
+    color: #1E404C;
+}
+
+
 
 .home-content__buttons .btn {
     width: 215px;
@@ -2543,6 +2605,24 @@ html.no-csstransitions .home-content__main {
         font-size: 2.5rem;
     }
 }
+
+
+/* ===================================================================
+ * # General Analysis
+ *
+ * ------------------------------------------------------------------- */
+.s-genal {
+    padding-top: 16.2rem;
+    padding-bottom: 13.2rem;
+
+    color: #D3E7EE;
+    position: relative;
+    background-color: #C37E65;
+    background-image: url("../images/site_img/groovepaper.png");
+}
+
+
+
 /* ===================================================================
  * # objectives
  *
