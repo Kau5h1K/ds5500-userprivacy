@@ -119,7 +119,6 @@ def text_output():
 
     # Merge original segments with the predictions
     tagged_segments = pd.concat([tagged_segments, orig_segments], axis=1)
-    print(list(tagged_segments[tagged_segments['Policy Change'] == 1]['segments']))
     segments = {}
     trigger = {}
     for cat in categories:
