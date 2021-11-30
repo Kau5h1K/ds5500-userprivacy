@@ -192,9 +192,9 @@ def productionPredict(segments, run_id, multi_threshold = True):
     else:
         y_pred = [np.where(prob >= np.array(thresholds_list), 1, 0) for prob in y_prob]
 
-    categories = label_encoder.decode(y_pred)
-    predictions = [{"input_text": segments[i], "preprocessed_text": preprocessed_segments[i], "predicted_tags": categories[i]} for i in range(len(categories))]
-
+    #categories = label_encoder.decode(y_pred)
+    #predictions = [{"input_text": segments[i], "preprocessed_text": preprocessed_segments[i], "predicted_tags": categories[i]} for i in range(len(categories))]
+    predictions = pd.DataFrame(y_pred, columns=[label_encoder.index_to_class[ele] for ele in range(len(label_encoder.classes))])
     return predictions
 
 

@@ -698,13 +698,17 @@ input[type="number"]:focus,
 input[type="search"]:focus,
 input[type="text"]:focus,
 input[type="tel"]:focus,
-input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
     color: #000000;
     border-bottom: 2px solid black;
 }
+
+input[type="url"]:focus{
+    color: #1E404C;
+}
+
 
 label, legend {
     font-family: "montserrat-regular", sans-serif;
@@ -805,7 +809,7 @@ input[type="button"] {
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     background-color: #c5c5c5;
-    border: .2rem solid #c5c5c5;
+    border: .2rem solid #1E404C;
 }
 
 .btn:hover,
@@ -2354,7 +2358,7 @@ html.no-csstransitions .home-content__main {
     font-family: "montserrat-bold", sans-serif;
     font-size: 4rem;
     line-height: 1;
-    color: #65AAC3;
+    color: #D3E7EE;
     text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
     position: relative;
     overflow: hidden;
@@ -2956,10 +2960,10 @@ html.no-csstransitions .home-content__main {
 }
 
 .clients-testimonials .testimonials p {
-    font-family: "lora-regular", serif;
+    font-family: "futura", serif;
     font-size: 3rem;
     line-height: 1.8;
-    color: #555555;
+    color: #1E404C;
     margin-bottom: 6rem;
 }
 
@@ -3770,4 +3774,125 @@ footer .row {
 }
 
 
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(https://fonts.googleapis.com/css?family=Handlee);
+
+
+
+.paper {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    min-width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    background: #C37E65;
+    background-image: url("../images/site_img/groovepaper.png");
+
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    overflow: hidden;
+}
+.paper:before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 60px;
+    background: radial-gradient(#1E404C 6px, transparent 7px) repeat-y;
+    background-size: 30px 30px;
+    border-right: 3px solid #1E404C;
+    box-sizing: border-box;
+}
+
+.paper-content {
+    position: absolute;
+    top: 30px; right: 0; bottom: 30px; left: 60px;
+
+    background-size: 30px 30px;
+}
+
+.paper-content textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    line-height: 30px;
+    padding: 0 10px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #D3E7EE;
+    font-family: "futura", sans-serif;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 1;
+    resize: none;
+}
+
+
+.paper-content textarea:focus{
+    color: #1E404C;
+}
+
+.paper-content textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.paper2 {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    min-width: 400px;
+    height: 80px;
+    margin: 0 auto;
+    background: #C37E65;
+    background-image: url("../images/site_img/groovepaper.png");
+
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    overflow: hidden;
+}
+.paper2:before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 60px;
+    background-size: 30px 30px;
+    border-right: 3px solid #1E404C;
+    box-sizing: border-box;
+}
+
+.paper2-content {
+    position: absolute;
+    top: 30px; right: 0; bottom: 30px; left: 60px;
+
+    background-size: 30px 30px;
+}
+
+
+.paper2-content input {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    line-height: 30px;
+    padding: 0 10px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #D3E7EE;
+    font-family: "futura", sans-serif;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 1;
+    resize: none;
+}
+
+.paper2-content input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 /*# sourceMappingURL=main.css.map */
+
+

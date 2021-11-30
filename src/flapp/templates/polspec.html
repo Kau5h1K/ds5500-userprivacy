@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+
+  <!--- basic page needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Textual Saliency</title>
+  <meta name="description" content="DETECTING TEXTUAL SALIENCY IN PRIVACY POLICY">
+  <meta name="author" content="Kaushik Nishtala, Shubhanshu Gupta">
+
+  <!-- mobile specific metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="../static/css/polspec.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <!-- script
+  ================================================== -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107820060-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-107820060-1');
+  </script>
+
+  <!-- favicons
+  ================================================== -->
+  <link rel="shortcut icon" href="../static/images/site_img/favicon_3.ico" type="image/x-icon">
+  <link rel="icon" href="../static/images/site_img/favicon_3.ico" type="image/x-icon">
+
+</head>
+<body>
+
+<div class="sidebar-container">
+
+  <ul class="sidebar-navigation">
+    <li class="header">Navigation</li>
+    <li>
+      <form action="/">
+      <a href="javascript:;" onclick="parentNode.submit();">
+        <i class="fa fa-home" aria-hidden="true"></i> Homepage
+      </a>
+      </form>
+    </li>
+    <li>
+      <a href="#">
+        <i class="fa fa-question-circle" aria-hidden="true"></i> Ask a question
+      </a>
+    </li>
+    <li class="header">Categories</li>
+    <li>
+      <a href="#data_collection">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> First Party
+      </a>
+    </li>
+    <li>
+      <a href="#data_security">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Data Security
+      </a>
+    </li>
+    <li>
+      <a href="#︎data_retention">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Data Retention
+      </a>
+    </li>
+    <li>
+      <a href="#third_party_sharing">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Third Party
+      </a>
+    </li>
+    <li>
+      <a href="#user_access">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> User Access
+      </a>
+    </li>
+    <li>
+      <a href="#user_choice">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> User Choice
+      </a>
+    </li>
+    <li>
+      <a href="#policy_change">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Policy Change
+      </a>
+    </li>
+    <li>
+      <a href="#do_not_track">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Do Not Track
+      </a>
+    </li>
+    <li>
+      <a href="#spl_audience">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Special Audience
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- partial:index.partial.html -->
+<h1 style="color:#1E404C">Paragraph Classification</h1>
+
+<h2>Categorize privacy policy text into <strong>data practice categories</strong></h2>
+<hr style="margin: auto 340px">
+
+
+    <h2 style="color:#1E404C">PRIVACY POLICY SUMMARY <small>{% if domain != "" %}<a href="{{url}}" target="_blank">({{domain}})</a>{% endif %}</small></h2>
+
+<div class="accordion">
+
+
+  <div class="accordion-item" id="data_collection" {% if segments_first_party_collection|length == 0 or not bool_first_party_collection %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_first_party_collection|length == 0 or not bool_first_party_collection %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat1.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+       <h1> First Party Collection/Use <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+         <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Privacy practice describing data collection or data use by the company or organization owning the website or mobile app.</span>
+       </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_first_party_collection%}red{% else %}green{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_first_party_collection %}COLLECTS{% else %}DOESN'T COLLECT{% endif %}</b> personal information from users.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate data collection practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_first_party_collection %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="data_security" {% if segments_data_security|length == 0 or not bool_data_security %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_data_security|length == 0 or not bool_data_security %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat3.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> Data Security <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes how users’ information is secured and protected, e.g., from confidentiality, integrity, or availability breaches.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_data_security%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_data_security %}PROVIDES{% else %}DOESN'T PROVIDE{% endif %}</b> security and encryption to protect your data.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate data security practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_data_security %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="︎data_retention" {% if segments_data_retention|length == 0 or not bool_data_retention %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_data_retention|length == 0 or not bool_data_retention %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat5.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> Data Retention <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes practices that specify the retention period for collected user information.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_data_retention%}red{% else %}green{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_data_retention %}RETAINS{% else %}DOESN'T RETAIN{% endif %}</b> your data post service termination.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate data retention practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_data_retention %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="third_party_sharing" {% if segments_third_party_sharing|length == 0 or not bool_third_party_sharing %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_third_party_sharing|length == 0 or not bool_third_party_sharing %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat2.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> Third Party Sharing/Collection <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes data sharing with third parties or data collection by third parties.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_third_party_sharing%}red{% else %}green{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_third_party_sharing %}SHARES{% else %}DOESN'T SHARE{% endif %}</b> your data with third parties.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate third party data sharing practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_third_party_sharing %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="user_access" {% if segments_user_access|length == 0 or not bool_user_access %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_user_access|length == 0 or not bool_user_access %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat4.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> User Access, Edit and Deletion <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes practices that allow users to access, edit or delete the data that the company or organization has about them.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_user_access%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_user_access %}ALLOWS{% else %}DOESN'T ALLOW{% endif %}</b> users to manage their stored information.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate user access practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_user_access %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="user_choice" {% if segments_user_choice|length == 0 or not bool_user_choice %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_user_choice|length == 0 or not bool_user_choice %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat6.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> User Choice/Control <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes general choices and control options available to users.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_user_choice%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_user_choice %}MENTIONS{% else %}DOESN'T MENTION{% endif %}</b> choices available to users.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate user choice practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_user_choice %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="policy_change" {% if segments_policy_change|length == 0 or not bool_policy_change %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_policy_change|length == 0 or not bool_policy_change %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat7.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> Policy Change <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes practices concerning if and how users will be informed of changes to its privacy policy, including any choices offered to users.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_policy_change%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_policy_change %}INFORMS{% else %}DOESN'T INFORM{% endif %}</b> users when changes to this policy occur.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate policy change practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_policy_change %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="do_not_track" {% if segments_do_not_track|length == 0 or not bool_do_not_track %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_do_not_track|length == 0 or not bool_do_not_track %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat8.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> Do Not Track <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Describes if and how Do Not Track signals (DNT) for online tracking and advertising are honored.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_do_not_track%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_do_not_track %}HONORS{% else %}DOESN'T HONOR{% endif %}</b> Do Not Track signals for online tracking.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate do-not-track practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_do_not_track %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="accordion-item" id="spl_audience" {% if segments_spl_audience|length == 0 or not bool_spl_audience %}disabled{% else %}{% endif %}>
+    <div class="accordion-item-header" {% if segments_spl_audience|length == 0 or not bool_spl_audience %}disabled{% else %}{% endif %}>
+      <img src="../static/images/site_img/cat9.png" width="60" height="60" style="float:top; text-align:center; display:block;  margin: auto;"/>
+      <h1> International and Specific Audiences <div class="tooltip"><i class="fa fa-info-circle" style="color: #1E404C; font-size:20px; margin-right: 9px"></i>
+        <span class="tooltiptext" style="color:#1E404C; border:0.2rem solid #1E404C">Specific audiences, such as children or international users, for which the company or organization may provide special provisions.</span>
+      </div> </h1>
+      <hr>
+      <p> <i class="fa fa-square {% if bool_spl_audience%}green{% else %}red{% endif %}" style="font-size:20px; margin-right: 9px;text-shadow: 0 0 3px #000;"></i>This company <b>{% if bool_spl_audience %}PROVIDES{% else %}DOESN'T PROVIDE{% endif %}</b> special provisions for specific audiences.</p>
+    </div>
+
+    <div class="accordion-item-body">
+      <div class="accordion-item-body-content">
+        <strong>Relevant Paragraphs that might indicate specific audiences practices:</strong>
+        <hr>
+        <ul class="list-group">
+          {% for paragraph in segments_spl_audience %}
+          <li class="list-group-item">{{paragraph}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- partial -->
+  <script  src="../static/js/polspec.js"></script>
+<script src="../static/js/jquery-3.2.1.min.js"></script>
+<script src="../static/js/plugins.js"></script>
+<script src="../static/js/main.js"></script>
+<script src="../static/js/popper.min.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+
+  })
+</script>
+
+</body>
+</html>
