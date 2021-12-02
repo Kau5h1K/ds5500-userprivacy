@@ -38,6 +38,44 @@
 </head>
 <body>
 
+{% set segments_data_security=cat_content['segments']['Data Security'] %}
+{% set segments_data_retention=cat_content['segments']['Data Retention'] %}
+{% set segments_do_not_track=cat_content['segments']['Do Not Track'] %}
+{% set segments_first_party_collection=cat_content['segments']['First Party Collection/Use'] %}
+{% set segments_third_party_sharing=cat_content['segments']['Third Party Sharing/Collection'] %}
+{% set segments_user_access=cat_content['segments']['User Access, Edit and Deletion'] %}
+{% set segments_policy_change=cat_content['segments']['Policy Change'] %}
+{% set segments_user_choice=cat_content['segments']['User Choice/Control'] %}
+{% set segments_spl_audience=cat_content['segments']['International and Specific Audiences'] %}
+{% set bool_data_security=cat_content['trigger']['Data Security'] %}
+{% set bool_data_retention=cat_content['trigger']['Data Retention'] %}
+{% set bool_do_not_track=cat_content['trigger']['Do Not Track'] %}
+{% set bool_first_party_collection=cat_content['trigger']['First Party Collection/Use'] %}
+{% set bool_third_party_sharing=cat_content['trigger']['Third Party Sharing/Collection'] %}
+{% set bool_user_access=cat_content['trigger']['User Access, Edit and Deletion'] %}
+{% set bool_policy_change=cat_content['trigger']['Policy Change'] %}
+{% set bool_user_choice=cat_content['trigger']['User Choice/Control'] %}
+{% set bool_spl_audience=cat_content['trigger']['International and Specific Audiences'] %}
+{% set confidence_data_security=cat_content['confidence']['Data Security'] %}
+{% set confidence_data_retention=cat_content['confidence']['Data Retention'] %}
+{% set confidence_do_not_track=cat_content['confidence']['Do Not Track'] %}
+{% set confidence_first_party_collection=cat_content['confidence']['First Party Collection/Use'] %}
+{% set confidence_third_party_sharing=cat_content['confidence']['Third Party Sharing/Collection'] %}
+{% set confidence_user_access=cat_content['confidence']['User Access, Edit and Deletion'] %}
+{% set confidence_policy_change=cat_content['confidence']['Policy Change'] %}
+{% set confidence_user_choice=cat_content['confidence']['User Choice/Control'] %}
+{% set confidence_spl_audience=cat_content['confidence']['International and Specific Audiences'] %}
+{% set sitelist_data_security=cat_content['sitelists']['Data Security'] %}
+{% set sitelist_data_retention=cat_content['sitelists']['Data Retention'] %}
+{% set sitelist_do_not_track=cat_content['sitelists']['Do Not Track'] %}
+{% set sitelist_first_party_collection=cat_content['sitelists']['First Party Collection/Use'] %}
+{% set sitelist_third_party_sharing=cat_content['sitelists']['Third Party Sharing/Collection'] %}
+{% set sitelist_user_access=cat_content['sitelists']['User Access, Edit and Deletion'] %}
+{% set sitelist_policy_change=cat_content['sitelists']['Policy Change'] %}
+{% set sitelist_user_choice=cat_content['sitelists']['User Choice/Control'] %}
+{% set sitelist_spl_audience=cat_content['sitelists']['International and Specific Audiences'] %}
+
+
 <div class="sidebar-container">
 
   <ul class="sidebar-navigation">
@@ -130,8 +168,12 @@
         <strong>Relevant Paragraphs that might indicate data collection practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_first_party_collection %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_first_party_collection|zip(confidence_first_party_collection, sitelist_first_party_collection) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -156,8 +198,12 @@
         <strong>Relevant Paragraphs that might indicate data security practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_data_security %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_data_security|zip(confidence_data_security, sitelist_data_security) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -182,8 +228,12 @@
         <strong>Relevant Paragraphs that might indicate data retention practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_data_retention %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_data_retention|zip(confidence_data_retention, sitelist_data_retention) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -208,8 +258,12 @@
         <strong>Relevant Paragraphs that might indicate third party data sharing practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_third_party_sharing %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_third_party_sharing|zip(confidence_third_party_sharing, sitelist_third_party_sharing) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -234,8 +288,12 @@
         <strong>Relevant Paragraphs that might indicate user access practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_user_access %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_user_access|zip(confidence_user_access, sitelist_user_access) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -260,8 +318,12 @@
         <strong>Relevant Paragraphs that might indicate user choice practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_user_choice %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_user_choice|zip(confidence_user_choice, sitelist_user_choice) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -286,8 +348,12 @@
         <strong>Relevant Paragraphs that might indicate policy change practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_policy_change %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_policy_change|zip(confidence_policy_change, sitelist_policy_change) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -312,8 +378,12 @@
         <strong>Relevant Paragraphs that might indicate do-not-track practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_do_not_track %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_do_not_track|zip(confidence_do_not_track, sitelist_do_not_track) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -338,8 +408,12 @@
         <strong>Relevant Paragraphs that might indicate specific audiences practices:</strong>
         <hr>
         <ul class="list-group">
-          {% for paragraph in segments_spl_audience %}
-          <li class="list-group-item">{{paragraph}}</li>
+          {% for paragraph, confidence, sitelist in segments_spl_audience|zip(confidence_spl_audience, sitelist_spl_audience) %}
+          <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
+            <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+            </div>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -357,11 +431,35 @@
 <script src="../static/js/main.js"></script>
 <script src="../static/js/popper.min.js"></script>
 <script src="../static/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/bowser@2.7.0/es5.js"></script>
 <script>
   $(document).ready(function() {
 
   })
 </script>
+<script>
+  function randomSite(sitelist) {
+    var i = parseInt(Math.random() * sitelist.length);
+    location.href = sitelist[i];
+    //window.open(url, '_blank').focus();
+  }
+</script>
+<script>
 
+  $(document).ready(function() {
+    var alerted = sessionStorage.getItem('alerted') || '';
+    if (alerted != 'yes') {
+      var result = bowser.getParser(window.navigator.userAgent);
+      alert("You are using " + result.parsedResult.browser.name +
+              " v" + result.parsedResult.browser.version +
+              " on " + result.parsedResult.os.name + "\n" + "For the best user experience, we highly recommend using Chrome v90 or above. This makes linking the paragraphs to their text on the original policy webpage possible, although not guaranteed.");
+      sessionStorage.setItem('alerted','yes');
+    }});
+
+
+
+
+
+</script>
 </body>
 </html>

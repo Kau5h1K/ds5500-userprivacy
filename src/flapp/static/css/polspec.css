@@ -392,6 +392,50 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
 
 
 
+.badgetip {
+  position: relative;
+  display: inline-block;
+}
+
+.badgetip .badgetiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #D3E7EE;
+  color: #1E404C;
+  text-align: center;
+  border-radius: 6px;
+  padding: 1px 1px;
+  position: absolute ;
+  z-index: 1 ;
+  top: -5px;
+  right: 105%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-weight: initial;
+  font-family: "montserrat-medium", sans-serif;
+  font-size: initial;
+  text-transform: initial;
+  letter-spacing: initial;
+}
+
+.badgetip .badgetiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent transparent;
+}
+
+.badgetip:hover .badgetiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 
 
 .sidebar-container {
@@ -491,4 +535,181 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
 
 .content-container {
   padding-left: 220px;
+}
+
+
+/* BADGE */
+
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem
+}
+
+.badge:empty {
+  display: none
+}
+
+.btn .badge {
+  position: relative;
+  top: -1px
+}
+
+.badge-pill {
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 10rem
+}
+
+.badge-primary {
+  color: #fff;
+  background-color: #65AAC3
+}
+
+.badge-primary[href]:hover, .badge-primary[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #178acc
+}
+
+.badge-secondary {
+  color: #212529;
+  background-color: #e9ecef
+}
+
+.badge-secondary[href]:hover, .badge-secondary[href]:focus {
+  color: #212529;
+  text-decoration: none;
+  background-color: #cbd3da
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #73A839
+}
+
+.badge-success[href]:hover, .badge-success[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #59822c
+}
+
+.badge-info {
+  color: #fff;
+  background-color: #033C73
+}
+
+.badge-info[href]:hover, .badge-info[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #022241
+}
+
+.badge-warning {
+  color: #fff;
+  background-color: #DD5600
+}
+
+.badge-warning[href]:hover, .badge-warning[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #aa4200
+}
+
+.badge-danger {
+  color: #fff;
+  background-color: #C71C22
+}
+
+.badge-danger[href]:hover, .badge-danger[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #9a161a
+}
+
+.badge-light {
+  color: #212529;
+  background-color: #f8f9fa
+}
+
+.badge-light[href]:hover, .badge-light[href]:focus {
+  color: #212529;
+  text-decoration: none;
+  background-color: #dae0e5
+}
+
+.badge-dark {
+  color: #fff;
+  background-color: #343a40
+}
+
+.badge-dark[href]:hover, .badge-dark[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #1d2124
+}
+
+.d-flex {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important
+}
+
+
+.justify-content-between {
+  -webkit-box-pack: justify !important;
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important
+}
+
+
+.align-items-center {
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important
+}
+
+
+.align-self-end {
+  -ms-flex-item-align: end !important;
+  align-self: flex-end !important
+}
+
+
+
+.list-group-item-action {
+  width: 100%;
+  color: #495057;
+  text-align: inherit
+}
+
+.list-group-item-action:hover, .list-group-item-action:focus {
+  color: #495057;
+  text-decoration: none;
+  background-color: #f8f9fa
+}
+
+.list-group-item-action:active {
+  color: #495057;
+  background-color: #e9ecef
+}
+
+
+
+.list-group-item-info.list-group-item-action:hover, .list-group-item-info.list-group-item-action:focus {
+  color: #021f3c;
+  background-color: #a8bbcf
+}
+
+.list-group-item-info.list-group-item-action.active {
+  color: #fff;
+  background-color: #021f3c;
+  border-color: #021f3c
 }

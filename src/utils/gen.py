@@ -158,3 +158,62 @@ def savePickle(obj, fpath):
 def loadPickle(fpath):
     with open(fpath, "rb") as f:
         return pickle.load(f)
+
+
+def rankSegments(list1, list2):
+    assert(len(list1) == len(list2))
+    if len(list1) == 0 or len(list2) == 0:
+        return list1, list2
+    list1, list2 = zip(*sorted(zip(list1, list2), reverse=True))
+    return list(list1), list(list2)
+
+
+def urlGen(url, start, end=None):
+    if end is None:
+        urlstr = url + "#:~:text=" + start
+    else:
+        urlstr = url + "#:~:text=" + start + "," + end
+    return urlstr
+
+def sitelistGen(segment_list, url, num_links = 3):
+    sitelist_cat = []
+    for segment in segment_list:
+        urllist = []
+        segment = segment.strip()
+        segment_tokens = segment.split(" ")
+
+        if len(segment_tokens) <= 5:
+            start = segment
+            gen_url = urlGen(url = url, start = start)
+            urllist.append(gen_url)
+        elif len(segment_tokens) > 5 and len(segment_tokens) <= 10:
+            for i in range(num_links-1):
+                start = " ".join(segment_tokens[0+i:2+i])
+                end = " ".join(segment_tokens[::-1][0+i:2+i][::-1])
+                gen_url = urlGen(url = url, start = start, end = end)
+                urllist.append(gen_url)
+        else:
+            for i in range(num_links):
+                start = " ".join(segment_tokens[0+i:3+i])
+                end = " ".join(segment_tokens[::-1][0+i:3+i][::-1])
+                gen_url = urlGen(url = url, start = start, end = end)
+                urllist.append(gen_url)
+
+        sitelist_cat.append(urllist)
+    return sitelist_cat
+
+
+
+if __name__ == '__main__':
+    segments = loadPickle("segments.pkl")
+    trigger = loadPickle("trigger.pkl")
+    confidence = loadPickle("confidence.pkl")
+    sitelists = loadPickle("sitelists.pkl")
+    url = loadPickle("url.pkl")
+    sitelistGen(segments['User Choice/Control'], url, num_links = 3)
+
+
+
+
+
+

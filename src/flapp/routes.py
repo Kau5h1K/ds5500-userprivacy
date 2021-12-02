@@ -19,7 +19,7 @@ from src.main import main
 from src.main import driver
 
 from src.flapp import app
-from src.utils.inputparse import url_input_parser, text_process_policy, reverse_paragraph_segmenter, post_process_segments
+from src.utils.inputparse import url_input_parser, text_process_policy, reverse_paragraph_segmenter
 from src.utils import gen
 from src.utils import metrics
 from src.utils import embeddings
@@ -110,43 +110,45 @@ def text_output():
     orig_segments = pd.DataFrame({'segments': segment_list})
     segments_processed = [text_process_policy(segment) for segment in segment_list]
     segments_processed = [segment for segment in segments_processed if segment.strip() != '']   # Remove blank lines
+    segments_processed = [segment for segment in segments_processed if len(segment.split()) > 1]
+    segments_processed_df = pd.DataFrame({'segments': segment_list})
 
     # Get predictions for segments
-    tagged_segments = driver.productionPredict(segments_processed, run_id, multi_threshold = True)
-
+    confidence_segments, tagged_segments = driver.productionPredict(segments_processed, run_id, multi_threshold = True)
     # Get total category counts for all segments
     results = tagged_segments.sum()
 
     # Merge original segments with the predictions
-    tagged_segments = pd.concat([tagged_segments, orig_segments], axis=1)
+    tagged_segments = pd.concat([tagged_segments, segments_processed_df], axis=1)
+    cat_content = {}
     segments = {}
     trigger = {}
-    for cat in categories:
-        segments[cat] = list(tagged_segments[tagged_segments[cat] == 1]['segments'])
-        segments[cat] = post_process_segments(segments[cat])
+    confidence = {}
+    sitelists = {}
 
+
+    for cat in categories:
+        confidence[cat], segments[cat] = gen.rankSegments(list(confidence_segments[tagged_segments[cat] == 1][cat]), list(tagged_segments[tagged_segments[cat] == 1]['segments']))
         # Trigger flags if greater than thresholds
         trigger[cat] = results[cat] >= cat_thresholds[cat]
+        sitelists[cat] = gen.sitelistGen(segments[cat], url, num_links = 3)
+        assert(len(confidence[cat]) == len(segments[cat]) == len(sitelists[cat]))
+
+    cat_content['segments'] = segments
+    cat_content['trigger'] = trigger
+    cat_content['confidence'] = confidence
+    cat_content['sitelists'] = sitelists
+
+
+    #DEBUGGING
+    #gen.savePickle(segments, "segments.pkl")
+    #gen.savePickle(trigger, "trigger.pkl")
+    #gen.savePickle(confidence, "confidence.pkl")
+    #gen.savePickle(sitelists, "sitelists.pkl")
+    #gen.savePickle(url, "url.pkl")
 
     return render_template("polspec.html", policy_text=policy_text,
-                           segments_data_security=segments['Data Security'],
-                           segments_data_retention=segments['Data Retention'],
-                           segments_do_not_track=segments['Do Not Track'],
-                           segments_first_party_collection=segments['First Party Collection/Use'],
-                           segments_third_party_sharing=segments['Third Party Sharing/Collection'],
-                           segments_user_access=segments['User Access, Edit and Deletion'],
-                           segments_policy_change=segments['Policy Change'],
-                           segments_user_choice=segments['User Choice/Control'],
-                           segments_spl_audience=segments['International and Specific Audiences'],
-                           bool_data_security=trigger['Data Security'],
-                           bool_data_retention=trigger['Data Retention'],
-                           bool_do_not_track=trigger['Do Not Track'],
-                           bool_first_party_collection=trigger['First Party Collection/Use'],
-                           bool_third_party_sharing=trigger['Third Party Sharing/Collection'],
-                           bool_user_access=trigger['User Access, Edit and Deletion'],
-                           bool_policy_change=trigger['Policy Change'],
-                           bool_user_choice=trigger['User Choice/Control'],
-                           bool_spl_audience=trigger['International and Specific Audiences'],
+                           cat_content = cat_content,
                            domain=domain,
                            url=url)
 
