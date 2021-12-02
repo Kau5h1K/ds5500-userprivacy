@@ -144,3 +144,10 @@ mlflow_registry/*
 
 # Best params
 src/config/best_params/*
+
+
+/src/utils/confidence.pkl
+/src/utils/segments.pkl
+/src/utils/sitelists.pkl
+/src/utils/trigger.pkl
+/src/utils/url.pkl
