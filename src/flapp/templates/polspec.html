@@ -171,7 +171,7 @@
           {% for paragraph, confidence, sitelist in segments_first_party_collection|zip(confidence_first_party_collection, sitelist_first_party_collection) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -201,7 +201,7 @@
           {% for paragraph, confidence, sitelist in segments_data_security|zip(confidence_data_security, sitelist_data_security) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -231,7 +231,7 @@
           {% for paragraph, confidence, sitelist in segments_data_retention|zip(confidence_data_retention, sitelist_data_retention) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -261,7 +261,7 @@
           {% for paragraph, confidence, sitelist in segments_third_party_sharing|zip(confidence_third_party_sharing, sitelist_third_party_sharing) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -291,7 +291,7 @@
           {% for paragraph, confidence, sitelist in segments_user_access|zip(confidence_user_access, sitelist_user_access) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -321,7 +321,7 @@
           {% for paragraph, confidence, sitelist in segments_user_choice|zip(confidence_user_choice, sitelist_user_choice) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -351,7 +351,7 @@
           {% for paragraph, confidence, sitelist in segments_policy_change|zip(confidence_policy_change, sitelist_policy_change) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -381,7 +381,7 @@
           {% for paragraph, confidence, sitelist in segments_do_not_track|zip(confidence_do_not_track, sitelist_do_not_track) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}
@@ -411,7 +411,7 @@
           {% for paragraph, confidence, sitelist in segments_spl_audience|zip(confidence_spl_audience, sitelist_spl_audience) %}
           <a href="#" onClick="randomSite({{ sitelist }});"class="list-group-item list-group-item-action d-flex justify-content-between ">{{paragraph}}
             <div class="badgetip"> <span class="badge badge-primary badge-pill align-self-end">{{confidence|round|int}}%</span>
-              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence</span>
+              <span class="badgetiptext" style=" border:0.2rem solid #1E404C">{{confidence|round(2)}}% confidence <small>(uncalibrated)</small></span>
             </div>
           </a>
           {% endfor %}

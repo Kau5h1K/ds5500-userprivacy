@@ -19,7 +19,7 @@ from src.main import main
 from src.main import driver
 
 from src.flapp import app
-from src.utils.inputparse import url_input_parser, text_process_policy, reverse_paragraph_segmenter
+from src.utils.inputparse import parseURL, text_process_policy, segmentParaRev
 from src.utils import gen
 from src.utils import metrics
 from src.utils import embeddings
@@ -75,7 +75,7 @@ def text_output():
     if url.strip() != '':
         # Try scraping the website
         try:
-            text, domain = url_input_parser(url)
+            text, domain = parseURL(url)
 
         except Exception as e:
             print(e)
@@ -83,7 +83,7 @@ def text_output():
             return render_template("error.html", message=message)
 
         # Split the text into segments
-        segment_list = reverse_paragraph_segmenter(text)
+        segment_list = segmentParaRev(text)
 
         # Error if no data scraped
         if len(segment_list) == 0:
@@ -96,7 +96,7 @@ def text_output():
             return render_template("error.html", message=message)
 
     elif policy_text.strip() != '':
-        segment_list = reverse_paragraph_segmenter(policy_text)
+        segment_list = segmentParaRev(policy_text)
 
         if len(' '.join(segment_list)) <= 500:
             message = '<p>The requested policy text is not big enough.</p><p>Please provide longer policies to obtain stable predictions.</p>'
