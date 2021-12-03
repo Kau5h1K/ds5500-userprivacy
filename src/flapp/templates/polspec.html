@@ -93,48 +93,48 @@
       </a>
     </li>
     <li class="header">Categories</li>
-    <li>
-      <a href="#data_collection">
+    <li {% if segments_first_party_collection|length == 0 or not bool_first_party_collection %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#data_collection" {% if segments_first_party_collection|length == 0 or not bool_first_party_collection %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> First Party
       </a>
     </li>
-    <li>
-      <a href="#data_security">
+    <li {% if segments_data_security|length == 0 or not bool_data_security %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#data_security" {% if segments_data_security|length == 0 or not bool_data_security %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Data Security
       </a>
     </li>
-    <li>
-      <a href="#︎data_retention">
+    <li {% if segments_data_retention|length == 0 or not bool_data_retention %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#︎data_retention" {% if segments_data_retention|length == 0 or not bool_data_retention %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Data Retention
       </a>
     </li>
-    <li>
-      <a href="#third_party_sharing">
+    <li {% if segments_third_party_sharing|length == 0 or not bool_third_party_sharing %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#third_party_sharing" {% if segments_third_party_sharing|length == 0 or not bool_third_party_sharing %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Third Party
       </a>
     </li>
-    <li>
-      <a href="#user_access">
+    <li {% if segments_user_access|length == 0 or not bool_user_access %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#user_access" {% if segments_user_access|length == 0 or not bool_user_access %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> User Access
       </a>
     </li>
-    <li>
-      <a href="#user_choice">
+    <li {% if segments_user_choice|length == 0 or not bool_user_choice %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#user_choice" {% if segments_user_choice|length == 0 or not bool_user_choice %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> User Choice
       </a>
     </li>
-    <li>
-      <a href="#policy_change">
+    <li {% if segments_policy_change|length == 0 or not bool_policy_change %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#policy_change" {% if segments_policy_change|length == 0 or not bool_policy_change %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Policy Change
       </a>
     </li>
-    <li>
-      <a href="#do_not_track">
+    <li {% if segments_do_not_track|length == 0 or not bool_do_not_track %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#do_not_track" {% if segments_do_not_track|length == 0 or not bool_do_not_track %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Do Not Track
       </a>
     </li>
-    <li>
-      <a href="#spl_audience">
+    <li {% if segments_spl_audience|length == 0 or not bool_spl_audience %}disabled{% else %}{% endif %}>
+      <a class="smoothscroll" href="#spl_audience" {% if segments_spl_audience|length == 0 or not bool_spl_audience %}disabled{% else %}{% endif %}>
         <i class="fa fa-info-circle" aria-hidden="true"></i> Special Audience
       </a>
     </li>

@@ -488,6 +488,24 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
   background-image: url("../images/site_img/groovepaper.png");
 }
 
+.sidebar-navigation li[disabled]{
+  cursor: not-allowed !important;
+}
+
+.sidebar-navigation li a[disabled]{
+  color: rgba(30, 64, 76, 0.5) !important;
+  pointer-events: none !important;
+}
+
+.sidebar-navigation li a[disabled]:active,
+.sidebar-navigation li a[disabled]:hover,
+.sidebar-navigation li a[disabled]:focus {
+  text-decoration: none;
+  outline: none;
+  color: #1E404C;
+  background-color: #B4B6B5;
+}
+
 .sidebar-navigation li .fa {
   margin-right: 10px;
 }

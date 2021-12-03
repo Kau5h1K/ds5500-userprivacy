@@ -56,7 +56,7 @@ public class DomainIndependentModel {
 	/**
 	 * Temporary file to keep track of features of unsupervised learning.
 	 */
-	static String strTemp_File_Features = "/Users/kaushik/Desktop/runasdus/src/com/lab/libraries/features.csv";
+	static String strTemp_File_Features = "/Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject/src/runasdus/src/com/lab/libraries/features.csv";
 
 	
 
@@ -67,7 +67,7 @@ public class DomainIndependentModel {
 	/**
 	 * Full path of the Stanford Core NLP's CONLL Classifer Model.
 	 */
-	static String model = "/Users/kaushik/Desktop/runasdus/src/com/lab/libraries/english.conll.4class.distsim.crf.ser.gz";
+	static String model = "/Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject/src/runasdus/src/com/lab/libraries/english.conll.4class.distsim.crf.ser.gz";
 
 	static CRFClassifier<CoreLabel> classifier = CRFClassifier.getClassifierNoExceptions(model);
 	static {
@@ -80,7 +80,7 @@ public class DomainIndependentModel {
 	 * Change this and pass the parent folder here.
 	 * 
 	 */
-	static String strParentFolder = "/Users/kaushik/Desktop/runasdus/src/com/lab/data/";
+	static String strParentFolder = "/Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject/src/runasdus/input";
 
 	/**
 	 * Change this and pass the appropriate test file name (Pass only the file
