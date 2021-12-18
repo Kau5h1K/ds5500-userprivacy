@@ -210,7 +210,7 @@ if __name__ == '__main__':
     confidence = loadPickle("confidence.pkl")
     sitelists = loadPickle("sitelists.pkl")
     url = loadPickle("url.pkl")
-    sitelistGen(segments['User Choice/Control'], url, num_links = 3)
+    #sitelistGen(segments['User Choice/Control'], url, num_links = 3)
 
 
 

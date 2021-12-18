@@ -4,7 +4,7 @@ import urllib
 from nltk.stem.snowball import *
 import re
 import string
-
+from src.utils import gen
 
 def tag_visible(element):
     if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
@@ -67,7 +67,7 @@ def segmentParaRev(doc):
     return [line for line in segs if line.strip() != '']
 
 
-def text_paragraph_segmenter(doc):
+def segmentPara(doc):
 
     lines = doc.split('\n')
     segs = list()
@@ -81,3 +81,12 @@ def text_paragraph_segmenter(doc):
             c += 1
 
     return [line for line in segs if line.strip() != '']
+
+
+if __name__ == '__main__':
+    segments = gen.loadPickle("segments.pkl")
+    trigger = gen.loadPickle("trigger.pkl")
+    confidence = gen.loadPickle("confidence.pkl")
+    sitelists = gen.loadPickle("sitelists.pkl")
+    url = gen.loadPickle("url.pkl")
+    #sitelistGen(segments['User Choice/Control'], url, num_links = 3)

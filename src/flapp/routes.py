@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 import mlflow
 import os
+import re
 
 from src.config import cfg
 from src.data import prepOPPCorpus
@@ -19,7 +20,7 @@ from src.main import main
 from src.main import driver
 
 from src.flapp import app
-from src.utils.inputparse import parseURL, text_process_policy, segmentParaRev
+from src.utils.inputparse import parseURL, text_process_policy, segmentParaRev, segmentPara
 from src.utils import gen
 from src.utils import metrics
 from src.utils import embeddings
@@ -109,9 +110,12 @@ def text_output():
     # Raw segments
     orig_segments = pd.DataFrame({'segments': segment_list})
     segments_processed = [text_process_policy(segment) for segment in segment_list]
+    regex = re.compile(r"^[^A-Za-z0-9]+")
+    segments_processed = [regex.sub("", segment) for segment in segments_processed]
+    segments_processed = [re.sub(" +", " ", segment).strip() for segment in segments_processed]
     segments_processed = [segment for segment in segments_processed if segment.strip() != '']   # Remove blank lines
     segments_processed = [segment for segment in segments_processed if len(segment.split()) > 1]
-    segments_processed_df = pd.DataFrame({'segments': segment_list})
+    segments_processed_df = pd.DataFrame({'segments': segments_processed})
 
     # Get predictions for segments
     confidence_segments, tagged_segments = driver.productionPredict(segments_processed, run_id, multi_threshold = True)
