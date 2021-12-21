@@ -129,9 +129,7 @@ dmypy.json
 .pyre/
 
 #dataset
-data/*
-src/data/OPP-115/*
-OPP-115/*
+*/OPP-115/*
 
 #ipynb checkpoints
 .ipynb_checkpoints
@@ -140,14 +138,14 @@ OPP-115/*
 .idea/*
 
 #MLFLOW registry
-mlflow_registry/*
+#mlflow_registry/*
 
 # Best params
-src/config/best_params/*
+#src/config/best_params/*
 
 
-/src/utils/confidence.pkl
-/src/utils/segments.pkl
-/src/utils/sitelists.pkl
-/src/utils/trigger.pkl
-/src/utils/url.pkl
+#/src/utils/confidence.pkl
+#/src/utils/segments.pkl
+#/src/utils/sitelists.pkl
+#/src/utils/trigger.pkl
+#/src/utils/url.pkl
