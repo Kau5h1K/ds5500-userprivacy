@@ -125,6 +125,13 @@ def loadID(fpath):
         run_ID = f.read().strip()
     return run_ID
 
+def packageSegments(segments):
+    counter = 1
+    docs = []
+    for segment in segments:
+        docs.append({"content": segment, "meta": {"name": "Paragraph-{}".format(counter)}})
+        counter+=1
+    return docs
 
 def loadParams(fpath):
     """

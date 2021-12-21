@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/kaushik/MyStuff/Workspace/NEU/DS5500/Project/DS5500_CapstoneProject/mlflow_registry/6/c4d6bdd3d1ff40b392f43477f4c44e72/artifacts
+end_time: 1636404950955
+entry_point_name: ''
+experiment_id: '6'
+lifecycle_stage: active
+name: ''
+run_id: c4d6bdd3d1ff40b392f43477f4c44e72
+run_uuid: c4d6bdd3d1ff40b392f43477f4c44e72
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1636404950946
+status: 3
+tags: []
+user_id: root

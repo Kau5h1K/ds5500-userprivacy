@@ -117,6 +117,12 @@ def text_output():
     segments_processed = [segment for segment in segments_processed if len(segment.split()) > 1]
     segments_processed_df = pd.DataFrame({'segments': segments_processed})
 
+    #Package segments info to Streamlit UI
+    segments_pkg = gen.packageSegments(segments_processed)
+    gen.savePickle(segments_pkg, "/home/user/appdata/segments.pkl")
+    gen.savePickle(domain, "/home/user/appdata/domain.pkl")
+    gen.savePickle(url, "/home/user/appdata/url.pkl")
+
     # Get predictions for segments
     confidence_segments, tagged_segments = driver.productionPredict(segments_processed, run_id, multi_threshold = True)
     # Get total category counts for all segments

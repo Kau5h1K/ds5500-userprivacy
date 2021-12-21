@@ -1,0 +1,201 @@
+{
+  "overall": {
+    "precision": 0.7642015810364876,
+    "recall": 0.6573787409700722,
+    "f1": 0.6994655055556986,
+    "num_samples": 568.0
+  },
+  "class": {
+    "Data Retention": {
+      "precision": 0.6666666666666666,
+      "recall": 0.2608695652173913,
+      "f1": 0.37500000000000006,
+      "num_samples": 23.0
+    },
+    "Data Security": {
+      "precision": 0.8444444444444444,
+      "recall": 0.6666666666666666,
+      "f1": 0.7450980392156862,
+      "num_samples": 57.0
+    },
+    "Do Not Track": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "num_samples": 5.0
+    },
+    "First Party Collection/Use": {
+      "precision": 0.7520661157024794,
+      "recall": 0.7982456140350878,
+      "f1": 0.7744680851063831,
+      "num_samples": 228.0
+    },
+    "International and Specific Audiences": {
+      "precision": 0.9787234042553191,
+      "recall": 0.8679245283018868,
+      "f1": 0.9199999999999999,
+      "num_samples": 53.0
+    },
+    "Introductory/Generic": {
+      "precision": 0.7555555555555555,
+      "recall": 0.5573770491803278,
+      "f1": 0.6415094339622641,
+      "num_samples": 122.0
+    },
+    "Policy Change": {
+      "precision": 0.9473684210526315,
+      "recall": 0.6206896551724138,
+      "f1": 0.75,
+      "num_samples": 29.0
+    },
+    "Practice not covered": {
+      "precision": 0.509090909090909,
+      "recall": 0.28865979381443296,
+      "f1": 0.3684210526315789,
+      "num_samples": 97.0
+    },
+    "Privacy contact information": {
+      "precision": 0.8536585365853658,
+      "recall": 0.7291666666666666,
+      "f1": 0.7865168539325843,
+      "num_samples": 48.0
+    },
+    "Third Party Sharing/Collection": {
+      "precision": 0.8363636363636363,
+      "recall": 0.7752808988764045,
+      "f1": 0.8046647230320699,
+      "num_samples": 178.0
+    },
+    "User Access, Edit and Deletion": {
+      "precision": 0.7894736842105263,
+      "recall": 0.4411764705882353,
+      "f1": 0.5660377358490566,
+      "num_samples": 34.0
+    },
+    "User Choice/Control": {
+      "precision": 0.6629213483146067,
+      "recall": 0.6210526315789474,
+      "f1": 0.6413043478260869,
+      "num_samples": 95.0
+    }
+  },
+  "report": {
+    "Data Retention": {
+      "precision": 0.6666666666666666,
+      "recall": 0.2608695652173913,
+      "f1-score": 0.37500000000000006,
+      "support": 23
+    },
+    "Data Security": {
+      "precision": 0.8444444444444444,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.7450980392156862,
+      "support": 57
+    },
+    "Do Not Track": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1-score": 0.888888888888889,
+      "support": 5
+    },
+    "First Party Collection/Use": {
+      "precision": 0.7520661157024794,
+      "recall": 0.7982456140350878,
+      "f1-score": 0.7744680851063831,
+      "support": 228
+    },
+    "International and Specific Audiences": {
+      "precision": 0.9787234042553191,
+      "recall": 0.8679245283018868,
+      "f1-score": 0.9199999999999999,
+      "support": 53
+    },
+    "Introductory/Generic": {
+      "precision": 0.7555555555555555,
+      "recall": 0.5573770491803278,
+      "f1-score": 0.6415094339622641,
+      "support": 122
+    },
+    "Policy Change": {
+      "precision": 0.9473684210526315,
+      "recall": 0.6206896551724138,
+      "f1-score": 0.75,
+      "support": 29
+    },
+    "Practice not covered": {
+      "precision": 0.509090909090909,
+      "recall": 0.28865979381443296,
+      "f1-score": 0.3684210526315789,
+      "support": 97
+    },
+    "Privacy contact information": {
+      "precision": 0.8536585365853658,
+      "recall": 0.7291666666666666,
+      "f1-score": 0.7865168539325843,
+      "support": 48
+    },
+    "Third Party Sharing/Collection": {
+      "precision": 0.8363636363636363,
+      "recall": 0.7752808988764045,
+      "f1-score": 0.8046647230320699,
+      "support": 178
+    },
+    "User Access, Edit and Deletion": {
+      "precision": 0.7894736842105263,
+      "recall": 0.4411764705882353,
+      "f1-score": 0.5660377358490566,
+      "support": 34
+    },
+    "User Choice/Control": {
+      "precision": 0.6629213483146067,
+      "recall": 0.6210526315789474,
+      "f1-score": 0.6413043478260869,
+      "support": 95
+    },
+    "micro avg": {
+      "precision": 0.7721212121212121,
+      "recall": 0.6573787409700722,
+      "f1-score": 0.7101449275362317,
+      "support": 969
+    },
+    "macro avg": {
+      "precision": 0.7996943935201783,
+      "recall": 0.6189257950082051,
+      "f1-score": 0.68849243003705,
+      "support": 969
+    },
+    "weighted avg": {
+      "precision": 0.7642015810364876,
+      "recall": 0.6573787409700722,
+      "f1-score": 0.6994655055556986,
+      "support": 969
+    },
+    "samples avg": {
+      "precision": 0.7853579812206574,
+      "recall": 0.733274647887324,
+      "f1-score": 0.7249664654594232,
+      "support": 969
+    }
+  },
+  "slices": {
+    "class": {
+      "selected_cats": {
+        "precision": 0.8823529411764706,
+        "recall": 0.45454545454545453,
+        "f1": 0.6,
+        "num_samples": 12
+      },
+      "short_text": {
+        "precision": 0.8666666666666667,
+        "recall": 0.8666666666666667,
+        "f1": 0.8666666666666667,
+        "num_samples": 11
+      }
+    },
+    "overall": {
+      "precision": 0.8748508098891732,
+      "recall": 0.651646903820817,
+      "f1": 0.7275362318840581
+    }
+  }
+}

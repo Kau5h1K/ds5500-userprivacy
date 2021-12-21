@@ -1,0 +1,22 @@
+{
+  "dataset": "majority",
+  "seed": 2021,
+  "cuda": true,
+  "lower": true,
+  "stem": false,
+  "train_size": 0.7,
+  "char_level": false,
+  "max_filter_size": 5,
+  "batch_size": 128,
+  "embedding_dim": 204,
+  "num_filters": 209,
+  "hidden_dim": 484,
+  "dropout_p": 0.7482758802337606,
+  "lr": 0.0003189955986529326,
+  "num_epochs": 200,
+  "embed": null,
+  "freeze_embed": false,
+  "patience": 10,
+  "threshold": 0.43178030848503113,
+  "num_samples": 3471
+}

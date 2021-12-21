@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 #dataset
-*/OPP-115/*
+OPP-115/*
 
 #ipynb checkpoints
 .ipynb_checkpoints

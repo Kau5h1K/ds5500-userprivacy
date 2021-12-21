@@ -1,0 +1,16 @@
+{
+    "class_to_index": {
+        "Data Retention": 0,
+        "Data Security": 1,
+        "Do Not Track": 2,
+        "First Party Collection/Use": 3,
+        "International and Specific Audiences": 4,
+        "Introductory/Generic": 5,
+        "Policy Change": 6,
+        "Practice not covered": 7,
+        "Privacy contact information": 8,
+        "Third Party Sharing/Collection": 9,
+        "User Access, Edit and Deletion": 10,
+        "User Choice/Control": 11
+    }
+}
