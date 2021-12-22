@@ -70,7 +70,7 @@ def main():
     reload_mode = 0
     #resp_bool = reset_datastore()
 
-    st.set_page_config(page_title='Privacy Policy QA', page_icon="https://haystack.deepset.ai/img/HaystackIcon.png")
+    st.set_page_config(page_title='Privacy Policy QA', page_icon=FAVICON)
     # if debug:
     #
     #     if resp_bool:

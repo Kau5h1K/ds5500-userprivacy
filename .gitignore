@@ -141,6 +141,9 @@ OPP-115/*
 #MLFLOW registry
 #mlflow_registry/*
 
+#trained models
+*/pytorch_model.bin
+
 # Best params
 #src/config/best_params/*
 
