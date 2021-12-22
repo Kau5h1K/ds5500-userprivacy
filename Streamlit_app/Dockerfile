@@ -18,17 +18,13 @@ COPY favicon.png /home/user/app_qa/
 COPY QA_models /home/user/app_qa/QA_models
 
 #Download and copy trained models
-RUN gdown --id 1JKjWvOVs1x4zT0PyOF1zFZDp78xnCqD_
-COPY pytorch_model.bin /home/user/app_qa/QA_models/bertbase_squadqa_policyqa/
+RUN gdown --id 1JKjWvOVs1x4zT0PyOF1zFZDp78xnCqD_ -O /home/user/app_qa/QA_models/bertbase_squadqa_policyqa/pytorch_model.bin
 
-RUN gdown --id 1eHZOphDTy6cAwyx9UDbJyItsMXqjbx4X
-COPY pytorch_model.bin /home/user/app_qa/QA_models/privbert_squadqa/
+RUN gdown --id 1eHZOphDTy6cAwyx9UDbJyItsMXqjbx4X -O /home/user/app_qa/QA_models/privbert_squadqa/pytorch_model.bin
 
-RUN gdown --id 1EV0X1E9-Akk_TE6la0aiPPBDmBI6L2Vv
-COPY pytorch_model.bin /home/user/app_qa/QA_models/privbert_squadqa_policyqa/
+RUN gdown --id 1EV0X1E9-Akk_TE6la0aiPPBDmBI6L2Vv -O /home/user/app_qa/QA_models/privbert_squadqa_policyqa/pytorch_model.bin
 
-RUN gdown --id 1P9tgeGEekU7xgtjRgDWU0VXkyuGBZyoe
-COPY pytorch_model.bin /home/user/app_qa/QA_models/robertabase_squadqa_policyqa/
+RUN gdown --id 1P9tgeGEekU7xgtjRgDWU0VXkyuGBZyoe -O /home/user/app_qa/QA_models/robertabase_squadqa_policyqa/pytorch_model.bin
 
 EXPOSE 8501
 
