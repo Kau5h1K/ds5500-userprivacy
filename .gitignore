@@ -142,7 +142,7 @@ OPP-115/*
 #mlflow_registry/*
 
 #trained models
-*/pytorch_model.bin
+**/pytorch_model.bin
 
 # Best params
 #src/config/best_params/*
