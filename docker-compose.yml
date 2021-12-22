@@ -1,0 +1,58 @@
+version: "3"
+
+volumes:
+  shared_poldata:
+
+
+services:
+
+  elasticsearch:
+    # This will start an empty elasticsearch instance (so you have to add your documents yourself)
+    #image: "elasticsearch:7.9.2"
+    # If you want a demo image instead that is "ready-to-query" with some indexed articles
+    # about countries and capital cities from Wikipedia:
+    image: "elasticsearch:7.9.2"
+    ports:
+      - 9200:9200
+    restart: on-failure
+    environment:
+      - discovery.type=single-node
+
+  flask-ui:
+    build:
+      context: Flask_app
+      dockerfile: Dockerfile
+    #image: "deepset/haystack-streamlit-ui:latest"
+    ports:
+      - 8577:8577
+    restart: on-failure
+    volumes:
+      - shared_poldata:/home/user/appdata
+    environment:
+      - API_ENDPOINT=http://haystack-api:8000
+    command: "/bin/bash -c 'sleep 15 && gunicorn -b :8577 -c gunicorn.py src.run:app'"
+
+  streamlit-ui:
+    build:
+      context: Streamlit_app
+      dockerfile: Dockerfile
+    #image: "deepset/haystack-streamlit-ui:latest"
+    ports:
+      - 8501:8501
+    restart: on-failure
+    volumes:
+      - shared_poldata:/home/user/appdata
+    environment:
+      - API_ENDPOINT=http://haystack-api:8000
+      - EVAL_FILE=random_questions.csv
+      - FAVICON_FILE=favicon.png
+      # The value fot the following variables will be read from the host, if present.
+      # They can also be temporarily set for docker-compose, for example:
+      # DISABLE_FILE_UPLOAD=1 DEFAULT_DOCS_FROM_RETRIEVER=5 docker-compose up
+      - DISABLE_FILE_UPLOAD=1
+      - DEFAULT_QUESTION_AT_STARTUP
+      - DEFAULT_DOCS_FROM_RETRIEVER
+      - DEFAULT_NUMBER_OF_ANSWERS
+    depends_on:
+      - elasticsearch
+    command: "/bin/bash -c 'sleep 15 && streamlit run AskMeAnything.py'"
