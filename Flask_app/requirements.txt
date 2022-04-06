@@ -1,7 +1,7 @@
 beautifulsoup4==4.10.0
 Flask==2.0.2
 gensim==4.1.2
-mlflow==1.13.1
+mlflow==1.23.1
 nltk==3.6.5
 numpy==1.21.2
 numpyencoder==0.3.0
