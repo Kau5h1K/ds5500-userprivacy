@@ -3,7 +3,7 @@ FROM python:3.7.4-stretch
 RUN mkdir -p /home/user/app
 WORKDIR /home/user/app
 
-RUN apt-get update && apt-get install -y curl git pkg-config cmake
+RUN apt-get install -y curl git pkg-config cmake
 
 # install as a package
 COPY requirements.txt /home/user/app
