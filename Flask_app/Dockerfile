@@ -3,6 +3,7 @@ FROM python:3.7.4-stretch
 RUN mkdir -p /home/user/app
 WORKDIR /home/user/app
 
+RUN mv /var/lib/apt/lists ~/
 RUN apt-get update
 RUN apt-get install -y curl git pkg-config cmake
 
