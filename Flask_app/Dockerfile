@@ -5,6 +5,7 @@ WORKDIR /home/user/app
 
 RUN ls -l /etc/apt/
 RUN cat /etc/apt/sources.list
+RUN pip install --upgrade pip
 #RUN apt-get update
 #RUN apt-get install -y curl git pkg-config cmake
 
